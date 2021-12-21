@@ -4,12 +4,17 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
 
 ### Context:
   - Anki is a Spaced Repetition System, wich I use every day to learn and practice new languages. 
-  - Readlang is an website and chrome extention. It provides an interface to automatically translate unknown words from a foregn language.
+  - Readlang is an website and chrome extention. It provides an interface to automatically translate unknown words from a foreign language, and save all the unknown words to a database.
 
 ### Motivation:
-  Both applications are really useful to learn languages, and belong to my routine of studies, however, Readlang does not provide a good importation system. It does export the new words to a .txt file, but has many problems. This python script parses the file and improves the importation.
+  Both applications are really useful to learn languages, and belong to my routine of studies, however, Readlang does not provide a good importation system. It does export the new words to a .txt file, but has many problems. 
   Through this integration I can easily and automatically create new anki flashcards while reading content in Readlang, a process that I used to do automatically up to now.
-
+  
+### Implemented:
+  - Merges repeted sentences
+  - Format the new learned word of the sentence with html bold.
+  - it shortens the readlang sentences. Readlang exports flashcards way too long, making learning monotonous, sometimes includding several sentences in the same field. Here I get the shortest sentence possible.
+  - adds the word in the foreing language by the side of the readlang translation.
 
 ### How to use:
   You need to have python3 installed.
