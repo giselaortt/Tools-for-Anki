@@ -13,6 +13,16 @@ def areEqual( first, second ):
 	return ( removeBold(first) == removeBold(second) )
 
 
+def separateFields( card ):
+
+    return card.split(";")
+
+
+def uniteFields( first, second ):
+
+    return first + ";" + second
+
+
 def transferBoldThroughSentences( first, second ):
 	one = first.split(" ")
 	two = second.split(" ")
@@ -27,12 +37,14 @@ def whoIsBold( sentence ):
     listOfWords = sentence.split(" ")
     for word in listOfWords:
         if("<b>" in word):
+
             return word
 
-
-#TODO
-def addToTranslation():
-    pass
+def addOriginalToTranslationField( card ):
+    sentence, translation = separateFields(card)
+    word = whoIsBold(sentence)
+    translation = word + "<b>:</b>" + translation
+    return uniteFields(sentence,translation)
 
 
 #TODO: E quando houverem mais de duas palavras em negrito na mesma frase ?
@@ -64,11 +76,6 @@ def shorterSentence( sentence ):
     		return subsentence
 
 
-def separateFields( card ):
-
-    return card.split(";")
-
-
 def shorterFirstField( card ):
     firstField, secondField = separateFields(card)
     firstField = shorterSentence(firstField)
@@ -85,6 +92,7 @@ if __name__ == "__main__":
     for line in fptr.readlines():
         line = shorterFirstField(line)
         line = createBold(line)
+        line = addOriginalToTranslationField(line)
         ans.write(line)
 
     cards = ans.readlines()
