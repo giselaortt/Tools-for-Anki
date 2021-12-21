@@ -1,13 +1,21 @@
 import sys
 import re
 
-
 def removeBold( sentence ):
 
-	return re.sub("<b>|</b>","", sentence)
+    return re.sub("<b>|</b>","", sentence)
 
 
+def createBold(sentence):
+    sentence = re.sub( "\[\[", "<b>", sentence )
+    sentence = re.sub( "]]", "</b>", sentence )
+
+    return sentence
+
+
+#May cause bug if more than 2 fields are included in the sentence
 def separateFields( card ):
+    print(card)
 
     return card.split(";")
 
@@ -15,7 +23,8 @@ def separateFields( card ):
 def firstFieldMatches( first, second ):
     first, _ = separateFields( first )
     second, _ = separateFields( second )
-	return ( removeBold(first) == removeBold(second) )
+
+    return ( removeBold(first) == removeBold(second) )
 
 
 def uniteFields( first, second ):
@@ -24,13 +33,13 @@ def uniteFields( first, second ):
 
 
 def transferBoldThroughSentences( first, second ):
-	one = first.split(" ")
-	two = second.split(" ")
-	for word, i in zip(two, range(len(two))):
-		if( "<b>" in word ):
-			one[i] = word
+    one = first.split(" ")
+    two = second.split(" ")
+    for word, i in zip(two, range(len(two))):
+        if( "<b>" in word ):
+            one[i] = word
 
-	return ' '.join(one)
+    return ' '.join(one)
 
 
 def whoIsBold( sentence ):
@@ -50,35 +59,29 @@ def formatTranslationField( card ):
 
 
 def mergeCards( firstCard, secondCard ):
-	firstSentence, firstTranslation =  separateFields( firstCard )
-	secondSentence, secondTranslation = separateFields( secondCard )
-	newSentence = transferBoldThroughSentences( firstSentence, secondSentence )
-	newTranslation = firstTranslation+", "+secondTranslation
+    firstSentence, firstTranslation =  separateFields( firstCard )
+    secondSentence, secondTranslation = separateFields( secondCard )
+    newSentence = transferBoldThroughSentences( firstSentence, secondSentence )
+    newTranslation = firstTranslation+", "+secondTranslation
 
-	return uniteFields( newSentence, newTranslation )
-
-
-def createBold(sentence):
-	sentence = re.sub( "\[\[", "<b> ", line )
-	sentence = re.sub( "]]", " </b>", line )
-
-	return sentence
+    return uniteFields( newSentence, newTranslation )
 
 
-def shorterSentence( sentence ):
+def shortenFirstField( sentence ):
     subsentences = re.split("–|;|!|\.|'|\"|«|:|»|,", line)
     for subsentence in subsentences :
-    	if '[[' in subsentence :
-    		#line = subsentence + ";" + subsentences[-1]
+        if '[[' in subsentence :
+            #line = subsentence + ";" + subsentences[-1]
 
-    		return subsentence.strip(" ")
+            return subsentence.strip(" ") + subsentences[-1]
 
 
-def shortenFirstField( card ):
-    firstField, secondField = separateFields(card)
-    firstField = shorterSentence(firstField)
-
-    return firtField + ";" + secondField
+def removeRepetitions( cards ):
+    for i in range( len(cards) ):
+            for j in range( i+1, len(cards) ):
+                if( firstFieldMatches( cards[i], cards[j] ) ):
+                    cards[i] = mergeCards( cards[i], cards[j] )
+                    cards.pop(j)
 
 
 if __name__ == "__main__":
@@ -93,12 +96,8 @@ if __name__ == "__main__":
         line = formatTranslationField(line)
         ans.write(line)
 
-    cards = ans.readlines()
-    for i in range( len(cards) ):
-        for j in range( i+1, len(cards) ):
-            if( firstFieldMatches( cards[i], cards[j] ) ):
-                cards[i] = mergeCards( cards[i], cards[j] )
-                cards.pop(j)
+    #cards = ans.readlines()
+    #cards = removeRepetitions(cards)
 
     for card in cards:
         otherfptr.write(cards)
