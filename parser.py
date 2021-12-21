@@ -21,6 +21,7 @@ def separateFields( card ):
 
 
 def firstFieldMatches( first, second ):
+    print(separateFields( first ))
     first,_ = separateFields( first )
     second,_ = separateFields( second )
 
@@ -77,17 +78,19 @@ def shortenFirstField( sentence ):
 
 
 def removeRepetitions( cards ):
-    for i in range( len(cards) ):
-            for j in range( i+1, len(cards) ):
+    for i in range( len(cards)-1, 0, -1 ):
+            for j in range( len(cards)-1, i+1, -1 ):
                 if( firstFieldMatches( cards[i], cards[j] ) ):
                     cards[i] = mergeCards( cards[i], cards[j] )
                     cards.pop(j)
+
+    return cards
 
 
 if __name__ == "__main__":
     fptr = open(sys.argv[1],'r')
     ans = open("parsed.txt", 'w+')
-    otherfptr = open("no_repetition.txt", "a")
+    otherfptr = open("no_repetition.txt", "w")
     otherfptr.write("\n")
 
     for line in fptr.readlines():
@@ -96,11 +99,12 @@ if __name__ == "__main__":
         line = formatTranslationField(line)
         ans.write(line)
 
-    #cards = ans.readlines()
-    #cards = removeRepetitions(cards)
-
+    ans.seek(0)
+    cards = ans.readlines()
+    print(cards)
+    cards = removeRepetitions(cards)
     for card in cards:
-        otherfptr.write(cards)
+        otherfptr.write(card)
 
     otherfptr.close()
     ans.close()
