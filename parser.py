@@ -71,7 +71,7 @@ def shorterSentence( sentence ):
     	if '[[' in subsentence :
     		#line = subsentence + ";" + subsentences[-1]
 
-    		return subsentence
+    		return subsentence.strip(" ")
 
 
 def shortenFirstField( card ):
