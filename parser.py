@@ -7,15 +7,15 @@ def removeBold( sentence ):
 	return re.sub("<b>|</b>","", sentence)
 
 
-#retorna se as sentences são iguais, depois de remover o negrito.
-def areEqual( first, second ):
-
-	return ( removeBold(first) == removeBold(second) )
-
-
 def separateFields( card ):
 
     return card.split(";")
+
+
+def firstFieldMatches( first, second ):
+    first, _ = separateFields( first )
+    second, _ = separateFields( second )
+	return ( removeBold(first) == removeBold(second) )
 
 
 def uniteFields( first, second ):
@@ -40,24 +40,22 @@ def whoIsBold( sentence ):
 
             return word
 
-def addOriginalToTranslationField( card ):
+
+def formatTranslationField( card ):
     sentence, translation = separateFields(card)
     word = whoIsBold(sentence)
-    translation = word + "<b>:</b>" + translation
+    translation = word + "<b>: </b>" + translation
+
     return uniteFields(sentence,translation)
 
 
-#TODO: E quando houverem mais de duas palavras em negrito na mesma frase ?
 def mergeCards( firstCard, secondCard ):
 	firstSentence, firstTranslation =  separateFields( firstCard )
 	secondSentence, secondTranslation = separateFields( secondCard )
 	newSentence = transferBoldThroughSentences( firstSentence, secondSentence )
-	#firstTranslation = whoIsBold(firstSentence) + "<b>:</b>" + firstTranslation
-	#secondTranslation = whoIsBold(secondSentence) + "<b>:</b>" + secondTranslation
-	#TODO: translations should include the word
 	newTranslation = firstTranslation+", "+secondTranslation
 
-	return newSentence+";"+newTranslation
+	return uniteFields( newSentence, newTranslation )
 
 
 def createBold(sentence):
@@ -76,7 +74,7 @@ def shorterSentence( sentence ):
     		return subsentence
 
 
-def shorterFirstField( card ):
+def shortenFirstField( card ):
     firstField, secondField = separateFields(card)
     firstField = shorterSentence(firstField)
 
@@ -90,13 +88,21 @@ if __name__ == "__main__":
     otherfptr.write("\n")
 
     for line in fptr.readlines():
-        line = shorterFirstField(line)
+        line = shortenFirstField(line)
         line = createBold(line)
-        line = addOriginalToTranslationField(line)
+        line = formatTranslationField(line)
         ans.write(line)
 
     cards = ans.readlines()
+    for i in range( len(cards) ):
+        for j in range( i+1, len(cards) ):
+            if( firstFieldMatches( cards[i], cards[j] ) ):
+                cards[i] = mergeCards( cards[i], cards[j] )
+                cards.pop(j)
 
+    for card in cards:
+        otherfptr.write(cards)
 
+    otherfptr.close()
     ans.close()
     fptr.close()
