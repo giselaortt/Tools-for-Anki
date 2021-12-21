@@ -14,15 +14,15 @@ def createBold(sentence):
 
 
 #May cause bug if more than 2 fields are included in the sentence
+#TODO: raise an exception if only one sentence is present
 def separateFields( card ):
-    print(card)
 
     return card.split(";")
 
 
 def firstFieldMatches( first, second ):
-    first, _ = separateFields( first )
-    second, _ = separateFields( second )
+    first,_ = separateFields( first )
+    second,_ = separateFields( second )
 
     return ( removeBold(first) == removeBold(second) )
 
@@ -68,12 +68,12 @@ def mergeCards( firstCard, secondCard ):
 
 
 def shortenFirstField( sentence ):
-    subsentences = re.split("–|;|!|\.|'|\"|«|:|»|,", line)
+    subsentences = re.split("–|;|!|\.|'|\"|«|:|»|,", sentence)
     for subsentence in subsentences :
         if '[[' in subsentence :
             #line = subsentence + ";" + subsentences[-1]
 
-            return subsentence.strip(" ") + subsentences[-1]
+            return subsentence.strip(" ") + ";" + subsentences[-1]
 
 
 def removeRepetitions( cards ):
