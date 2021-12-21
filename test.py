@@ -10,6 +10,12 @@ class TestParser( unittest.TestCase ):
         self.assertEqual(removeBold(test), expected)
 
 
+    def test_getFirstField(self):
+        test = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch; schob sich auf dem Rücken langsam näher zum Bettpfosten, um den Kopf besser heben zu können\; fand die juckende Stelle, die mit lauter kleinen weißen Pünktchen besetzt war, die er ;buscar"
+        expected = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch"
+        self.assertEqual(getFirstField(test), expected)
+
+
     def test_createBold(self):
         test = "Der Teufel soll das alles [[holen]]"
         expected = "Der Teufel soll das alles <b>holen</b>"
@@ -28,8 +34,8 @@ class TestParser( unittest.TestCase ):
 
 
     def test_firstFieldMatches_with_different_second_field(self):
-        test = "this is a sentence; alguma coisa"
-        other_test = "this is a sentence; etwas"
+        test = "this is a <b>sentence</b>; alguma coisa"
+        other_test = "this <b>is</b> a sentence; etwas"
         self.assertTrue(firstFieldMatches(test, test))
 
 

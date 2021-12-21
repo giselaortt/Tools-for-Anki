@@ -20,10 +20,14 @@ def separateFields( card ):
     return card.split(";")
 
 
+def getFirstField( card ):
+
+    return card.split(";")[0]
+
+
 def firstFieldMatches( first, second ):
-    print(separateFields( first ))
-    first,_ = separateFields( first )
-    second,_ = separateFields( second )
+    first = getFirstField( first )
+    second = getFirstField( second )
 
     return ( removeBold(first) == removeBold(second) )
 
@@ -101,7 +105,6 @@ if __name__ == "__main__":
 
     ans.seek(0)
     cards = ans.readlines()
-    print(cards)
     cards = removeRepetitions(cards)
     for card in cards:
         otherfptr.write(card)
