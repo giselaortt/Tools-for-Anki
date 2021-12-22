@@ -66,22 +66,22 @@ class TestParser( unittest.TestCase ):
         self.assertIsNone( whoIsBold(test) )
 
 
-    def test_formatTrparsed_filelationField( self ):
+    def test_formatTranslatedField( self ):
         test = "Der Teufel soll das alles <b>holen</b>;Esperar"
         expected = "Der Teufel soll das alles <b>holen</b>;<b>holen</b><b>: </b>Esperar"
-        self.assertEqual(formatTrparsed_filelationField(test), expected)
+        self.assertEqual(formatTranslatedField(test), expected)
 
 
-    def test_trparsed_fileferBoldThroughSentences( self ):
+    def test_transferBoldThroughSentences( self ):
         test = "Der Teufel soll das alles <b>holen</b>"
         othertest = "Der <b>Teufel</b> soll das alles holen"
         expected = "Der <b>Teufel</b> soll das alles <b>holen</b>"
-        self.assertEqual( trparsed_fileferBoldThroughSentences(test, othertest), expected )
+        self.assertEqual( transferBoldThroughSentences(test, othertest), expected )
 
 
-    def test_trparsed_fileferBoldThroughSentences_equal_sentences( self ):
+    def test_transferBoldThroughSentences_equal_sentences( self ):
         test = "Der Teufel soll das alles <b>holen</b>"
-        self.assertEqual( trparsed_fileferBoldThroughSentences(test, test), test )
+        self.assertEqual( transferBoldThroughSentences(test, test), test )
 
 
     def test_mergeCards( self ):

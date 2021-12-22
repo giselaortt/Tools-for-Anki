@@ -35,7 +35,7 @@ def joinFields( first, second ):
     return first + ";" + second
 
 
-def trparsed_fileferBoldThroughSentences( first, second ):
+def transferBoldThroughSentences( first, second ):
     one = first.split(" ")
     two = second.split(" ")
     for word, i in zip(two, range(len(two))):
@@ -53,21 +53,21 @@ def whoIsBold( sentence ):
             return word
 
 
-def formatTrparsed_filelationField( card ):
-    sentence, trparsed_filelation = separateFields(card)
+def formatTranslatedField( card ):
+    sentence, Translated = separateFields(card)
     word = whoIsBold(sentence)
-    trparsed_filelation = word + "<b>: </b>" + trparsed_filelation
+    Translated = word + "<b>: </b>" + Translated
 
-    return joinFields(sentence,trparsed_filelation)
+    return joinFields(sentence,Translated)
 
 
 def mergeCards( firstCard, secondCard ):
-    firstSentence, firstTrparsed_filelation =  separateFields( firstCard )
-    secondSentence, secondTrparsed_filelation = separateFields( secondCard )
-    newSentence = trparsed_fileferBoldThroughSentences( firstSentence, secondSentence )
-    newTrparsed_filelation = firstTrparsed_filelation+", "+secondTrparsed_filelation
+    firstSentence, firstTranslated =  separateFields( firstCard )
+    secondSentence, secondTranslated = separateFields( secondCard )
+    newSentence = transferBoldThroughSentences( firstSentence, secondSentence )
+    newTranslated = firstTranslated+", "+secondTranslated
 
-    return joinFields( newSentence, newTrparsed_filelation )
+    return joinFields( newSentence, newTranslated )
 
 
 def shortenFirstField( sentence ):
@@ -76,14 +76,16 @@ def shortenFirstField( sentence ):
         if '[[' in subsentence :
             #line = subsentence + ";" + subsentences[-1]
 
-            return subsentence.strip(" ") + ";" + subsentences[-1]
+            return subsentence + ";" + subsentences[-1]
 
 
 def removeRepetitions( cards ):
     for i in range( len(cards)-1, -1, -1 ):
         for j in range( len(cards)-1, i, -1 ):
             if( firstFieldMatches( cards[i], cards[j] ) ):
-                cards[i] = mergeCards( cards[i], cards[j] )
+                cards[i]=cards[i].strip("\n")
+                cards[j]=cards[j].strip("\n")
+                cards[i] = mergeCards( cards[i], cards[j] )+"\n"
                 del cards[j]
 
     return cards
@@ -93,17 +95,22 @@ if __name__ == "__main__":
     input_file = open(sys.argv[1],'r')
     parsed_file = open("parsed.txt", 'w+')
     no_repetition = open("without_repetition.txt", "w")
-    no_repetition.write("\n")
 
     for line in input_file.readlines():
+        if(line == "\n"):
+            continue
+        line = re.sub("\n", " ", line)
+        line = line.strip("\n")
         line = shortenFirstField(line)
         line = createBold(line)
-        line = formatTrparsed_filelationField(line)
+        line = formatTranslatedField(line)
         parsed_file.write(line)
+        parsed_file.write("\n")
 
     parsed_file.seek(0)
     cards = parsed_file.readlines()
     cards = removeRepetitions(cards)
+
     for card in cards:
         no_repetition.write(card)
 

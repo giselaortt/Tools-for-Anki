@@ -14,7 +14,7 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - Merges repeted sentences
   - Format the new learned word of the sentence with html bold.
   - it shortens the readlang sentences. Readlang exports flashcards way too long, making learning monotonous, sometimes includding several sentences in the same field. Here I get the shortest sentence possible.
-  - adds the word in the foreing language by the side of the readlang trparsed_filelation.
+  - adds the word in the foreing language by the side of the readlang Translated.
 
 ### How to use:
   You need to have python3 installed.
