@@ -32,12 +32,12 @@ def firstFieldMatches( first, second ):
     return ( removeBold(first) == removeBold(second) )
 
 
-def uniteFields( first, second ):
+def joinFields( first, second ):
 
     return first + ";" + second
 
 
-def transferBoldThroughSentences( first, second ):
+def trparsed_fileferBoldThroughSentences( first, second ):
     one = first.split(" ")
     two = second.split(" ")
     for word, i in zip(two, range(len(two))):
@@ -55,21 +55,21 @@ def whoIsBold( sentence ):
             return word
 
 
-def formatTranslationField( card ):
-    sentence, translation = separateFields(card)
+def formatTrparsed_filelationField( card ):
+    sentence, trparsed_filelation = separateFields(card)
     word = whoIsBold(sentence)
-    translation = word + "<b>: </b>" + translation
+    trparsed_filelation = word + "<b>: </b>" + trparsed_filelation
 
-    return uniteFields(sentence,translation)
+    return joinFields(sentence,trparsed_filelation)
 
 
 def mergeCards( firstCard, secondCard ):
-    firstSentence, firstTranslation =  separateFields( firstCard )
-    secondSentence, secondTranslation = separateFields( secondCard )
-    newSentence = transferBoldThroughSentences( firstSentence, secondSentence )
-    newTranslation = firstTranslation+", "+secondTranslation
+    firstSentence, firstTrparsed_filelation =  separateFields( firstCard )
+    secondSentence, secondTrparsed_filelation = separateFields( secondCard )
+    newSentence = trparsed_fileferBoldThroughSentences( firstSentence, secondSentence )
+    newTrparsed_filelation = firstTrparsed_filelation+", "+secondTrparsed_filelation
 
-    return uniteFields( newSentence, newTranslation )
+    return joinFields( newSentence, newTrparsed_filelation )
 
 
 def shortenFirstField( sentence ):
@@ -82,33 +82,33 @@ def shortenFirstField( sentence ):
 
 
 def removeRepetitions( cards ):
-    for i in range( len(cards)-1, 0, -1 ):
-            for j in range( len(cards)-1, i+1, -1 ):
-                if( firstFieldMatches( cards[i], cards[j] ) ):
-                    cards[i] = mergeCards( cards[i], cards[j] )
-                    cards.pop(j)
+    for i in range( len(cards)-1, -1, -1 ):
+        for j in range( len(cards)-1, i, -1 ):
+            if( firstFieldMatches( cards[i], cards[j] ) ):
+                cards[i] = mergeCards( cards[i], cards[j] )
+                del cards[j]
 
     return cards
 
 
 if __name__ == "__main__":
-    fptr = open(sys.argv[1],'r')
-    ans = open("parsed.txt", 'w+')
-    otherfptr = open("no_repetition.txt", "w")
-    otherfptr.write("\n")
+    input_file = open(sys.argv[1],'r')
+    parsed_file = open("parsed.txt", 'w+')
+    no_repetition = open("without_repetition.txt", "w")
+    no_repetition.write("\n")
 
-    for line in fptr.readlines():
+    for line in input_file.readlines():
         line = shortenFirstField(line)
         line = createBold(line)
-        line = formatTranslationField(line)
-        ans.write(line)
+        line = formatTrparsed_filelationField(line)
+        parsed_file.write(line)
 
-    ans.seek(0)
-    cards = ans.readlines()
+    parsed_file.seek(0)
+    cards = parsed_file.readlines()
     cards = removeRepetitions(cards)
     for card in cards:
-        otherfptr.write(card)
+        no_repetition.write(card)
 
-    otherfptr.close()
-    ans.close()
-    fptr.close()
+    no_repetition.close()
+    parsed_file.close()
+    input_file.close()

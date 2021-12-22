@@ -109,7 +109,7 @@ Nur sich nicht im Bett <b>unnütz</b> aufhalten;<b>unnütz</b><b>: </b>sem utili
 sofort einen <b>Schlosser</b> holen;<b>Schlosser</b><b>: </b>chaveiro
 vom Arzt und vom <b>Schlosser</b>;<b>Schlosser</b><b>: </b>chaveiro
 wohl <b>infolge</b> der im Bett bereits erlangten Übung;<b>infolge</b><b>: </b>como resultado
-er war <b>begierig</b> zu erfahren;<b>begierig</b><b>: </b>ansioso
+er war <b>begierig</b> zu erfahren;<b>begierig</b><b>: </b>parsed_fileioso
 nach <b>Beseitigung</b> des Hindernisses;<b>Beseitigung</b><b>: </b>Eliminação
 als <b>vertreibe</b> ihn eine unsichtbare;<b>vertreibe</b><b>: </b>expulsar
 vor Gewissensbissen <b>närrisch</b> wurde und geradezu nicht imstande war;<b>närrisch</b><b>: </b>Insensato
@@ -152,7 +152,7 @@ als warte dort auf ihn eine geradezu <b>überirdische</b> Erlösung;<b>überirdi
 sondern <b>verzog</b> sich;<b>verzog</b><b>: </b>empenado
 und nur über die zuckende Schulter hinweg sah er mit <b>aufgeworfenen</b> Lippen nach Gregor zurück;<b>aufgeworfenen</b><b>: </b>criado
 und nur über die <b>zuckende</b> Schulter hinweg sah er mit aufgeworfenen Lippen nach Gregor zurück;<b>zuckende</b><b>: </b>contração muscular
-auf ihre Ursachen hin nicht mehr zu <b>durchschauenden</b> Folgen am eigenen Leibe zu spüren bekommt;<b>durchschauenden</b><b>: </b>transparente
+auf ihre Ursachen hin nicht mehr zu <b>durchschauenden</b> Folgen am eigenen Leibe zu spüren bekommt;<b>durchschauenden</b><b>: </b>trparsed_fileparente
 <b>Zufälligkeiten</b> und grundlosen Beschwerden werden kann;<b>Zufälligkeiten</b><b>: </b>Coincidências
 so leicht ein Opfer von <b>Klatschereien</b>;<b>Klatschereien</b><b>: </b>Fofocas
 der in seiner Eigenschaft als Unternehmer sich in seinem Urteil leicht zuungunsten eines Angestellten <b>beirren</b> läßt;<b>beirren</b><b>: </b>confundir
@@ -180,7 +180,7 @@ Der hellere Klang des endlich <b>zurückschnappenden</b> Schlosses erweckte Greg
 <b>besinnungslos</b> in den Schlüssel;<b>besinnungslos</b><b>: </b>sem sentido
 <b>verbiß</b> er sich mit allem;<b>verbiß</b><b>: </b>obstinado
 daß er sich zweifellos irgendeinen Schaden <b>zufügte</b>;<b>zufügte</b><b>: </b>adicionado
-und <b>ruhte</b> sich dort einen Augenblick lang von der Anstrengung aus;<b>ruhte</b><b>: </b>descansado
+und <b>ruhte</b> sich dort einen Augenblick lang von der parsed_filetrengung aus;<b>ruhte</b><b>: </b>descparsed_fileado
 vielleicht lehnten alle an der Türe und <b>horchten</b>;<b>horchten</b><b>: </b>Ouvido
 Vielleicht saßen die Eltern mit dem Prokuristen beim Tisch und <b>tuschelten</b>;<b>tuschelten</b><b>: </b>sussurrou
 was er selbst zu entscheiden sich nicht mehr <b>getraute</b>;<b>getraute</b><b>: </b>confiável
@@ -210,7 +210,7 @@ Ein wenig wurde der Fall durch den Teppich <b>abgeschwächt</b>;<b>abgeschwächt
 vor <b>Gewissensbissen</b> närrisch wurde und geradezu nicht imstande war;<b>Gewissensbissen</b><b>: </b>Remorso
 <b>befangen</b> in irgendeiner unsinnigen Hoffnung;<b>befangen</b><b>: </b>auto-consciente
 daß er den Überschwung auf dem Fußboden <b>vollzog</b>;<b>vollzog</b><b>: </b>realizado
-daß er den <b>Überschwung</b> auf dem Fußboden vollzog;<b>Überschwung</b><b>: </b>Transbordar
+daß er den <b>Überschwung</b> auf dem Fußboden vollzog;<b>Überschwung</b><b>: </b>Trparsed_filebordar
 Als Gregor schon zur Hälfte aus dem Bette <b>ragte</b>;<b>ragte</b><b>: </b>esticado para fora
 den Körper in seiner ganzen Länge vollständig gleichmäßig aus dem Bett <b>hinauszuschaukeln</b>;<b>hinauszuschaukeln</b><b>: </b>para agitar
 der sogar die andere Seite der engen Straße <b>verhüllte</b>;<b>verhüllte</b><b>: </b>velado
@@ -243,7 +243,7 @@ nie herzlich <b>werdender</b> menschlicher Verkehr;<b>werdender</b><b>: </b>cres
 nie <b>andauernder</b>;<b>andauernder</b><b>: </b>persistente
 ein immer <b>wechselnder</b>;<b>wechselnder</b><b>: </b>mudando
 das <b>unregelmäßige</b>;<b>unregelmäßige</b><b>: </b>irregular
-die Sorgen um die <b>Zuganschlüsse</b>;<b>Zuganschlüsse</b><b>: </b>Puxe as conexões
+die Sorgen um die <b>Zugparsed_filechlüsse</b>;<b>Zugparsed_filechlüsse</b><b>: </b>Puxe as conexões
 <b>dumpfen</b> Schmerz zu fühlen begann;<b>dumpfen</b><b>: </b>maçante
 immer wieder <b>schaukelte</b> er in die Rückenlage zurück;<b>schaukelte</b><b>: </b>abalado
 aber das war gänzlich <b>undurchführbar</b>;<b>undurchführbar</b><b>: </b>impraticável
