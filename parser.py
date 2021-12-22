@@ -1,5 +1,7 @@
 import sys
 import re
+import os
+
 
 def removeBold( sentence ):
 
@@ -74,9 +76,8 @@ def shortenFirstField( sentence ):
     subsentences = re.split("–|;|!|\.|'|\"|«|:|»|,", sentence)
     for subsentence in subsentences :
         if '[[' in subsentence :
-            #line = subsentence + ";" + subsentences[-1]
 
-            return subsentence + ";" + subsentences[-1]
+            return subsentence.strip(" ") + ";" + subsentences[-1]
 
 
 def removeRepetitions( cards ):
@@ -113,6 +114,8 @@ if __name__ == "__main__":
 
     for card in cards:
         no_repetition.write(card)
+
+    os.remove("parsed.txt")
 
     no_repetition.close()
     parsed_file.close()
