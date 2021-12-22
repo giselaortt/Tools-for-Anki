@@ -65,7 +65,7 @@ def mergeCards( firstCard, secondCard ):
     firstSentence, firstTranslated =  separateFields( firstCard )
     secondSentence, secondTranslated = separateFields( secondCard )
     newSentence = transferBoldThroughSentences( firstSentence, secondSentence )
-    newTranslated = firstTranslated+", "+secondTranslated
+    newTranslated = firstTranslated.strip(" ")+", "+secondTranslated
 
     return joinFields( newSentence, newTranslated )
 
