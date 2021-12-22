@@ -13,8 +13,6 @@ def createBold(sentence):
     return sentence
 
 
-#May cause bug if more than 2 fields are included in the sentence
-#TODO: raise an exception if only one sentence is present
 def separateFields( card ):
 
     return card.split(";")
