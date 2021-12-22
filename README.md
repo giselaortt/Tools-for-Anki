@@ -8,7 +8,7 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
 
 ### Motivation:
   Both applications are really useful to learn languages, and belong to my routine of studies, however, Readlang does not provide a good importation system. It does export the new words to a .txt file, but has many problems. 
-  Through this integration I can easily and automatically create new anki flashcards while reading content in Readlang, a process that I used to do automatically up to now.
+  Through this integration I can easily and automatically create new anki flashcards while reading content in Readlang, a process that I used to do manually up to now.
   
 ### Implemented:
   - Merges repeted sentences
