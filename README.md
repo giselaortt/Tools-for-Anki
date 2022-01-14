@@ -15,10 +15,15 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - Format the new learned word of the sentence with html bold.
   - it shortens the readlang sentences. Readlang exports flashcards way too long, making learning monotonous and slow, sometimes includding several sentences in the same field. Here I get the shortest sentence possible.
   - adds the word in the foreing language by the side of the readlang Translation.
+  - Integration with google translate in order to add the whole sentence translated to my flashcards.
 
 ### To be implemented:
-  - Integration with google translate in order to add the hole sentence translated to my flashcards.
   - Control for the size of the setences, not to end up with 1 word sentences.
+  - Easier change of language. Currently contains only german to portuguese.
+
+## Problems to be fixed:
+  - When the same sentence appears twice, the final card contains twice the translation. we want it to contain only 1 tre translations.
+  - Slow.
 
 ### How to use:
   You need to have python3 installed.
