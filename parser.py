@@ -81,11 +81,32 @@ def formatTranslatedField( card ):
     return joinFields(sentence,translated)
 
 
+def getPositionOfTheWord( sentence, word ):
+
+    return re.search(word, sentence).start()
+
+
+def getFirstWord( sentence ):
+
+    return sentence.split(" ")[0]
+
+
+def glueTranslationsInOrder( sentence, firstWord, secondWord ):
+
+    pass
+
+
+#TODO shorten this function
 def mergeCards( firstCard, secondCard ):
     firstSentence, firstTranslated =  separateFields( firstCard )
     secondSentence, secondTranslated = separateFields( secondCard )
     newSentence = transferBoldThroughSentences( firstSentence, secondSentence )
-    newTranslated = firstTranslated.strip(" ")+", "+secondTranslated
+    firstWord=firstTranslated.split(" ")[1]
+    secondWord=secondTranslated.split(" ")[1]
+    if( getPositionOfTheWord(newSentence, firstWord) < getPositionOfTheWord(newSentence, secondWord) ):
+        newTranslated = firstTranslated.strip(" ") + ", " + secondTranslated
+    else:
+        newTranslated = secondTranslated.strip(" ") + ", " + firstTranslated
 
     return joinFields( newSentence, newTranslated )
 
