@@ -148,5 +148,11 @@ class TestParser( unittest.TestCase ):
         self.assertEqual(expected, removeBold(test))
 
 
+    def testGetFirstWord( self ):
+        test = "Der Teufel soll das alles <b>holen</b>"
+        expected = "Der"
+        self.assertEqual( getFirstWord(test), expected )
+
+
 if __name__ == '__main__':
     unittest.main()
