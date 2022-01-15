@@ -21,6 +21,11 @@ def separateFields( card ):
     return card.split(";")
 
 
+def joinFields( first, second ):
+
+    return first + ";" + second
+
+
 def getFirstField( card ):
 
     return card.split(";")[0]
@@ -33,11 +38,6 @@ def firstFieldMatches( first, second ):
     return ( removeBold(first) == removeBold(second) )
 
 
-def joinFields( first, second ):
-
-    return first + ";" + second
-
-
 def transferBoldThroughSentences( first, second ):
     one = first.split(" ")
     two = second.split(" ")
@@ -46,6 +46,17 @@ def transferBoldThroughSentences( first, second ):
             one[i] = word
 
     return ' '.join(one)
+
+
+def getWordFromTranslationField( translationField ):
+
+    return removeBold( translationField ).split(" ")[0].strip(":")
+
+
+# TODO: should return error or exception if the word is not contained
+def getPositionOfTheWord( sentence, word ):
+
+    return re.search(word, sentence).start()
 
 
 def whoIsBold( sentence ):
@@ -72,17 +83,6 @@ def formatTranslatedField( card ):
     translated = word + "<b>: </b>" + translated
 
     return joinFields(sentence,translated)
-
-
-def getWordFromTranslationField( translationField ):
-
-    return removeBold( translationField ).split(" ")[0].strip(":")
-
-
-# TODO: should return error or exception if the word is not contained
-def getPositionOfTheWord( sentence, word ):
-
-    return re.search(word, sentence).start()
 
 
 #TODO: we need to search for the sentence without the bold and with /b before and after the word
@@ -156,7 +156,6 @@ if __name__ == "__main__":
         line = createBold(line)
         line = substituteTranslationOfTheWord(line)
         line = formatTranslatedField(line)
-        line = addHoleSentenceTranslation(line)
         parsed_file.write(line)
         parsed_file.write("\n")
 
@@ -165,6 +164,7 @@ if __name__ == "__main__":
     cards = removeRepetitions(cards)
 
     for card in cards:
+        card = addHoleSentenceTranslation(card)
         no_repetition.write(card)
 
     os.remove("parsed.txt")
