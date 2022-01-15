@@ -3,7 +3,7 @@ import re
 import os
 from googletrans import Translator
 
-translator = Translator()
+
 
 def removeBold( sentence ):
 
@@ -68,6 +68,7 @@ def substituteTranslationOfTheWord( card ):
     sentence, _ = separateFields(card)
     word = whoIsBold(sentence)
     word = removeBold( word )
+    translator = Translator()
     translated = translator.translate(word, src='de', dest='pt')
 
     return joinFields(sentence,translated.text)
@@ -81,34 +82,36 @@ def formatTranslatedField( card ):
     return joinFields(sentence,translated)
 
 
+def getWordFromTranslationField( translationField ):
+
+    return removeBold( translationField ).split(" ")[0].strip(":")
+
+
 def getPositionOfTheWord( sentence, word ):
 
     return re.search(word, sentence).start()
 
 
-def getFirstWord( sentence ):
+#TODO: we need to search for the sentence without the bold and with /b before and after the word
+def glueTranslationFieldsInOrder( sentence, firstTranslationField, secondTranslationField ):
+    firstWord = getWordFromTranslationField( firstTranslationField )
+    secondWord = getWordFromTranslationField( secondTranslationField )
+    if( getPositionOfTheWord(sentence, firstWord) < getPositionOfTheWord(sentence, secondWord) ):
+        newTranslated = firstTranslationField.strip(" ") + ", " + secondTranslationField
+    else:
+        newTranslated = secondTranslationField.strip(" ") + ", " + firstTranslationField
 
-    return sentence.split(" ")[0]
-
-
-def glueTranslationsInOrder( sentence, firstWord, secondWord ):
-
-    pass
+    return newTranslated
 
 
 #TODO shorten this function
 def mergeCards( firstCard, secondCard ):
-    firstSentence, firstTranslated =  separateFields( firstCard )
-    secondSentence, secondTranslated = separateFields( secondCard )
+    firstSentence, firstTranslationField =  separateFields( firstCard )
+    secondSentence, secondTranslationField = separateFields( secondCard )
     newSentence = transferBoldThroughSentences( firstSentence, secondSentence )
-    firstWord=firstTranslated.split(" ")[1]
-    secondWord=secondTranslated.split(" ")[1]
-    if( getPositionOfTheWord(newSentence, firstWord) < getPositionOfTheWord(newSentence, secondWord) ):
-        newTranslated = firstTranslated.strip(" ") + ", " + secondTranslated
-    else:
-        newTranslated = secondTranslated.strip(" ") + ", " + firstTranslated
+    newTranslationField = glueTranslationFieldsInOrder( sentence, firstTranslationField, secondTranslationField )
 
-    return joinFields( newSentence, newTranslated )
+    return joinFields( newSentence, newTranslationField )
 
 
 def shortenFirstField( sentence ):
@@ -122,8 +125,9 @@ def shortenFirstField( sentence ):
 #sometimes having the words translated are not enough.
 def addHoleSentenceTranslation( card ):
     sentence, translations = separateFields(card)
-    #translator = Translator()
-    sentenceTranslation = translator.translate(sentence, src='de', dest='pt')
+    sentenceWithoutBold = removeBold(sentence)
+    translator = Translator()
+    sentenceTranslation = translator.translate(sentenceWithoutBold, src='de', dest='pt')
     translations = translations + "<br>" + sentenceTranslation.text
 
     return joinFields(sentence,translations)
@@ -141,6 +145,8 @@ def removeRepetitions( cards ):
     return cards
 
 
+#TODO: traducao da frase toda aparece duas vezes
+#TODO: processar todas as frases de uma vez para maior eficiência
 if __name__ == "__main__":
     input_file = open(sys.argv[1],'r')
     parsed_file = open("parsed.txt", 'w+')
