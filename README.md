@@ -23,7 +23,6 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - OCR: extract text from the PDF's of the Goethe-tests.
 
 ## Problems to be fixed:
-  - When the same sentence appears twice, the final card contains twice the translation. we want it to contain only 1 tre translations.
   - Slow.
 
 ### How to use:
