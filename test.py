@@ -85,14 +85,14 @@ class TestParser( unittest.TestCase ):
 
 
     def test_mergeCards( self ):
-        test = "Der Teufel soll das alles <b>holen</b>;buscar"
-        othertest = "Der <b>Teufel</b> soll das alles holen;demonio"
-        expected = "Der <b>Teufel</b> soll das alles <b>holen</b>;buscar, demonio"
+        test = "Der Teufel soll das alles <b>holen</b>; holen: buscar"
+        othertest = "Der <b>Teufel</b> soll das alles holen; Teufel: demonio"
+        expected = "Der <b>Teufel</b> soll das alles <b>holen</b>;Teufel: demonio, holen: buscar"
         self.assertEqual( mergeCards(test,othertest), expected )
 
 
     def test_removeRepetitions_length_one_array( self ):
-        test = ["Der Teufel soll das alles <b>holen</b>;buscar"]
+        test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar"]
         self.assertEqual( removeRepetitions(test), test )
 
 
@@ -102,38 +102,40 @@ class TestParser( unittest.TestCase ):
 
 
     def test_removeRepetitions_same_sentence( self ):
-        test = ["Der Teufel soll das alles <b>holen</b>;buscar","Der Teufel soll das alles <b>holen</b>;buscar"]
-        expected = ["Der Teufel soll das alles <b>holen</b>;buscar, buscar\n"]
+        test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der Teufel soll das alles <b>holen</b>;holen: buscar"]
+        expected = ["Der Teufel soll das alles <b>holen</b>;holen: buscar, holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
     def test_removeRepetitions( self ):
-        test = ["Der Teufel soll das alles <b>holen</b>;buscar","Der <b>Teufel</b> soll das alles holen;demonio" ]
-        expected = ["Der <b>Teufel</b> soll das alles <b>holen</b>;buscar, demonio\n"]
+        test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen;Teufel: demonio" ]
+        expected = ["Der <b>Teufel</b> soll das alles <b>holen</b>;Teufel: demonio, holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
 
     def test_removeRepetitions_three_repetitions( self ):
-        test = ["Der Teufel soll das alles <b>holen</b>;buscar","Der <b>Teufel</b> soll das alles holen;demonio","Der Teufel soll <b>das</b> alles holen;o,a" ]
-        expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;buscar, demonio, o,a\n"]
+        test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen; Teufel: demonio","Der Teufel soll <b>das</b> alles holen; o: a" ]
+        expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;o: a, Teufel: demonio, holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
 
     def test_removeRepetitions_no_repetition( self ):
-        test = ["Der Teufel soll das alles <b>holen</b>;buscar","Der <b>Teufel</b> soll das alles holen;demonio","Der Teufel soll <b>das</b> alles holen;o,a" ]
-        expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;buscar, demonio, o,a\n"]
+        test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen; Teufel: demonio","Der Teufel soll <b>das</b> alles holen; o: a" ]
+        expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;o: a, Teufel: demonio, holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
 
     def test_shortenFirstField( self ):
-        test = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch\; schob sich auf dem Rücken langsam näher zum Bettpfosten, um den Kopf besser heben zu können\; fand die juckende Stelle, die mit lauter kleinen weißen Pünktchen besetzt war, die er ;buscar"
-        expected = "Der Teufel soll das alles [[holen]];buscar"
+        test = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch\; schob sich auf dem Rücken langsam näher zum Bettpfosten, um den Kopf besser heben zu können\; fand die juckende Stelle, die mit lauter kleinen weißen Pünktchen besetzt war, die er ;holen: buscar"
+        expected = "Der Teufel soll das alles [[holen]];holen: buscar"
         self.assertEqual(shortenFirstField(test), expected)
 
 
+    '''
     def testAddHoleSentenceTranslation( self ):
          test = "Der Teufel soll das alles <b>holen</b>;buscar"
          expected = "Der Teufel soll das alles <b>holen</b>;buscar<br>Deixe o diabo <b> pegar </b> tudo isso"
          self.assertEqual(expected, addHoleSentenceTranslation(test) )
+    '''
 
 
     def testSubstituteTranslationOfTheWord( self ):
@@ -148,10 +150,12 @@ class TestParser( unittest.TestCase ):
         self.assertEqual(expected, removeBold(test))
 
 
-    def testGetFirstWord( self ):
-        test = "Der Teufel soll das alles <b>holen</b>"
-        expected = "Der"
+    def getWordFromTranslationField( self ):
+        test = "<b>Aussichten</b><b>: </b>panorama<br>as <b> perspectivas </b> para o futuro"
+        expected = "Aussichten"
         self.assertEqual( getFirstWord(test), expected )
+
+
 
 
 if __name__ == '__main__':
