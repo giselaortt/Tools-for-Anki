@@ -4,127 +4,127 @@ from parser import *
 #TODO: rename de functions
 class TestParser( unittest.TestCase ):
 
-    def test_remove_bold(self):
+    def testRemoveBold(self):
         test = "<b>holen</b>"
         expected = "holen"
         self.assertEqual(removeBold(test), expected)
 
 
-    def test_get_first_field(self):
-        test = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch; schob sich auf dem Rücken langsam näher zum Bettpfosten, um den Kopf besser heben zu können\; fand die juckende Stelle, die mit lauter kleinen weißen Pünktchen besetzt war, die er ;buscar"
-        expected = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch"
-        self.assertEqual(getFirstField(test), expected)
-
-
-    def test_create_bold(self):
+    def testCreateBold(self):
         test = "Der Teufel soll das alles [[holen]]"
         expected = "Der Teufel soll das alles <b>holen</b>"
         self.assertEqual(createBold(test), expected)
 
 
-    def test_create_bold_beginning_of_the_sentence(self):
+    def testGetFirstField(self):
+        test = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch; schob sich auf dem Rücken langsam näher zum Bettpfosten, um den Kopf besser heben zu können\; fand die juckende Stelle, die mit lauter kleinen weißen Pünktchen besetzt war, die er ;buscar"
+        expected = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch"
+        self.assertEqual(getFirstField(test), expected)
+
+
+    def testFirstFieldMatches(self):
+        test = "this is a sentence;"
+        self.assertTrue(firstFieldMatches(test, test))
+
+
+    def testCreateBoldbeginningOfTheSentence(self):
         test = "[[holen]]"
         expected = "<b>holen</b>"
         self.assertEqual(createBold(test), expected)
 
 
-    def test_first_field_matches(self):
-        test = "this is a sentence;"
-        self.assertTrue(firstFieldMatches(test, test))
-
-
-    def test_first_field_matches_with_different_second_field(self):
+    def testFirstFieldMatchesWithDifferentSecondField(self):
         test = "this is a <b>sentence</b>; alguma coisa"
         other_test = "this <b>is</b> a sentence; etwas"
         self.assertTrue(firstFieldMatches(test, test))
 
 
-    def test_first_field_matches_second_field_inexistent(self):
+    def testFirstFieldMatchesSecondFieldInexistent(self):
         test = "this is a sentence; alguma coisa"
         other_test = "this is a sentence;"
         self.assertTrue(firstFieldMatches(test, test))
 
 
-    def test_first_field_matches_false(self):
+    def testFirstFieldMatchesFalse(self):
         test = "this is a sentence;"
         other_test = "this is another sentence;"
         self.assertFalse( firstFieldMatches(test, other_test) )
 
 
-    def test_who_is_bold_single_word( self ):
+    def testWhoIsBoldSingleWord( self ):
         test = "<b>holen</b>"
         self.assertEqual( whoIsBold(test), test )
 
 
-    def test_who_is_bold( self ):
+    def testWhoIsBold( self ):
         test = "Der Teufel soll das alles <b>holen</b>"
         self.assertEqual( whoIsBold(test), "<b>holen</b>" )
 
 
-    def test_who_is_bold_no_bold( self ):
+    def testWhoIsBoldNoBold( self ):
         test = "Der Teufel soll das alles holen"
         self.assertIsNone( whoIsBold(test) )
 
 
-    def test_formatTranslatedField( self ):
+    def testFormatTranslatedField( self ):
         test = "Der Teufel soll das alles <b>holen</b>;Esperar"
         expected = "Der Teufel soll das alles <b>holen</b>;<b>holen</b><b>: </b>Esperar"
         self.assertEqual(formatTranslatedField(test), expected)
 
 
-    def test_transferBoldThroughSentences( self ):
+    def testTransferBoldThroughSentences( self ):
         test = "Der Teufel soll das alles <b>holen</b>"
         othertest = "Der <b>Teufel</b> soll das alles holen"
         expected = "Der <b>Teufel</b> soll das alles <b>holen</b>"
         self.assertEqual( transferBoldThroughSentences(test, othertest), expected )
 
 
-    def test_transferBoldThroughSentences_equal_sentences( self ):
+    def testTransferBoldThroughSentencesEqualSentences( self ):
         test = "Der Teufel soll das alles <b>holen</b>"
         self.assertEqual( transferBoldThroughSentences(test, test), test )
 
 
-    def test_mergeCards( self ):
+    def testMergeCards( self ):
         test = "Der Teufel soll das alles <b>holen</b>; holen: buscar"
         othertest = "Der <b>Teufel</b> soll das alles holen; Teufel: demonio"
         expected = "Der <b>Teufel</b> soll das alles <b>holen</b>;Teufel: demonio, holen: buscar"
         self.assertEqual( mergeCards(test,othertest), expected )
 
 
-    def test_removeRepetitions_length_one_array( self ):
+    def testRemoveRepetitionsLengthOneArray( self ):
         test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar"]
         self.assertEqual( removeRepetitions(test), test )
 
 
-    def test_removeRepetitions_length_zero_array( self ):
+    def testRemoveRepetitionsLengthZeroArray( self ):
         test = []
         self.assertEqual( removeRepetitions(test), test )
 
 
-    def test_removeRepetitions_same_sentence( self ):
+    def testRemoveRepetitionsSameSentence( self ):
         test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der Teufel soll das alles <b>holen</b>;holen: buscar"]
         expected = ["Der Teufel soll das alles <b>holen</b>;holen: buscar, holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
-    def test_removeRepetitions( self ):
+    def testRemoveRepetitions( self ):
         test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen;Teufel: demonio" ]
         expected = ["Der <b>Teufel</b> soll das alles <b>holen</b>;Teufel: demonio, holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
 
-    def test_removeRepetitions_three_repetitions( self ):
+    def testRemoveRepetitionsWithThreeRepetitions( self ):
         test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen; Teufel: demonio","Der Teufel soll <b>das</b> alles holen; o: a" ]
         expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;o: a, Teufel: demonio, holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
 
-    def test_removeRepetitions_no_repetition( self ):
+    def testRemoveRepetitionsNoRepetition( self ):
         test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen; Teufel: demonio","Der Teufel soll <b>das</b> alles holen; o: a" ]
         expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;o: a, Teufel: demonio, holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
 
-    def test_shortenFirstField( self ):
+    def testShortenFirstField( self ):
         test = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch\ und schob sich auf dem Rücken langsam näher zum Bettpfosten, um den Kopf besser heben zu können;holen: buscar"
         expected = "Der Teufel soll das alles [[holen]];holen: buscar"
         self.assertEqual(shortenFirstField(test), expected)
@@ -144,7 +144,7 @@ class TestParser( unittest.TestCase ):
         self.assertEqual(expected, substituteTranslationOfTheWord(test) )
 
 
-    def test_removeBold( self ):
+    def testRemoveBold( self ):
         test = "Der Teufel soll das alles <b>holen</b>"
         expected = "Der Teufel soll das alles holen"
         self.assertEqual(expected, removeBold(test))

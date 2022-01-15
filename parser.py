@@ -16,12 +16,6 @@ def createBold( sentence ):
     return sentence
 
 
-def removeBold( sentence ):
-    sentence = re.sub("<b>|</b>", "", sentence)
-
-    return sentence
-
-
 def separateFields( card ):
 
     return card.split(";")
