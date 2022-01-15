@@ -109,7 +109,7 @@ def mergeCards( firstCard, secondCard ):
     firstSentence, firstTranslationField =  separateFields( firstCard )
     secondSentence, secondTranslationField = separateFields( secondCard )
     newSentence = transferBoldThroughSentences( firstSentence, secondSentence )
-    newTranslationField = glueTranslationFieldsInOrder( sentence, firstTranslationField, secondTranslationField )
+    newTranslationField = glueTranslationFieldsInOrder( newSentence, firstTranslationField, secondTranslationField )
 
     return joinFields( newSentence, newTranslationField )
 
