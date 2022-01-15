@@ -1,7 +1,7 @@
 import unittest
 from parser import *
 
-
+#TODO: rename de functions
 class TestParser( unittest.TestCase ):
 
     def test_remove_bold(self):
@@ -125,7 +125,7 @@ class TestParser( unittest.TestCase ):
 
 
     def test_shortenFirstField( self ):
-        test = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch\; schob sich auf dem Rücken langsam näher zum Bettpfosten, um den Kopf besser heben zu können\; fand die juckende Stelle, die mit lauter kleinen weißen Pünktchen besetzt war, die er ;holen: buscar"
+        test = "Der Teufel soll das alles [[holen]]!« Er fühlte ein leichtes Jucken oben auf dem Bauch\ und schob sich auf dem Rücken langsam näher zum Bettpfosten, um den Kopf besser heben zu können;holen: buscar"
         expected = "Der Teufel soll das alles [[holen]];holen: buscar"
         self.assertEqual(shortenFirstField(test), expected)
 
@@ -150,12 +150,22 @@ class TestParser( unittest.TestCase ):
         self.assertEqual(expected, removeBold(test))
 
 
-    def getWordFromTranslationField( self ):
+    def testGetWordFromTranslationField( self ):
         test = "<b>Aussichten</b><b>: </b>panorama<br>as <b> perspectivas </b> para o futuro"
         expected = "Aussichten"
-        self.assertEqual( getFirstWord(test), expected )
+        self.assertEqual( getWordFromTranslationField(test), expected )
 
 
+    def testGlueTranslationFieldsInOrder( self ):
+        testSentence = "Der <b>Teufel</b> soll das alles <b>holen</b>;"
+        testFirstTranslationField = "Teufel: demonio"
+        testSecondTranslationField = " holen: buscar"
+        expected = "holen: buscar, Teufel: demonio"
+        self.assertEqual( glueTranslationFieldsInOrder(testSentence, testFirstTranslationField, testSecondTranslationField), expected )
+
+
+    def testGetPositionOfTheWord( self ):
+        pass
 
 
 if __name__ == '__main__':
