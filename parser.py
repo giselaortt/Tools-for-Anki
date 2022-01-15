@@ -4,7 +4,6 @@ import os
 from googletrans import Translator
 
 
-
 def removeBold( sentence ):
 
     return re.sub("<b>|</b>","", sentence)
@@ -63,7 +62,6 @@ def whoIsBold( sentence ):
             return word
 
 
-#I decided to substitute the Readlang translation for the googletrans version, because Readlang includes several errors.
 def substituteTranslationOfTheWord( card ):
     sentence, _ = separateFields(card)
     word = whoIsBold(sentence)
@@ -87,6 +85,7 @@ def getWordFromTranslationField( translationField ):
     return removeBold( translationField ).split(" ")[0].strip(":")
 
 
+# TODO: should return error or exception if the word is not contained
 def getPositionOfTheWord( sentence, word ):
 
     return re.search(word, sentence).start()
@@ -97,14 +96,13 @@ def glueTranslationFieldsInOrder( sentence, firstTranslationField, secondTransla
     firstWord = getWordFromTranslationField( firstTranslationField )
     secondWord = getWordFromTranslationField( secondTranslationField )
     if( getPositionOfTheWord(sentence, firstWord) < getPositionOfTheWord(sentence, secondWord) ):
-        newTranslated = firstTranslationField.strip(" ") + ", " + secondTranslationField
+        newTranslated = firstTranslationField.strip(" ") + ", " + secondTranslationField.strip(" ")
     else:
-        newTranslated = secondTranslationField.strip(" ") + ", " + firstTranslationField
+        newTranslated = secondTranslationField.strip(" ") + ", " + firstTranslationField.strip(" ")
 
     return newTranslated
 
 
-#TODO shorten this function
 def mergeCards( firstCard, secondCard ):
     firstSentence, firstTranslationField =  separateFields( firstCard )
     secondSentence, secondTranslationField = separateFields( secondCard )
@@ -114,15 +112,17 @@ def mergeCards( firstCard, secondCard ):
     return joinFields( newSentence, newTranslationField )
 
 
-def shortenFirstField( sentence ):
+#bug found
+def shortenFirstField( card ):
+    sentence, translation = separateFields( card )
     subsentences = re.split("–|;|!|\.|'|\"|«|:|»|,", sentence)
     for subsentence in subsentences :
         if '[[' in subsentence :
 
-            return subsentence.strip(" ") + ";" + subsentences[-1]
+            return subsentence.strip(" ") + ";" + translation
 
 
-#sometimes having the words translated are not enough.
+#sometimes having the words translated is not enough.
 def addHoleSentenceTranslation( card ):
     sentence, translations = separateFields(card)
     sentenceWithoutBold = removeBold(sentence)
