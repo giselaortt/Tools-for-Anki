@@ -95,20 +95,33 @@ def transferBoldThroughSentences( first, second ):
     return ' '.join(one)
 
 
-def sortWordsFromTranslationField( translationField, sentence ):
-    pass
+def splitTranslationField( translationField ):
+
+    return translationField.split(",")
+
+
+def sortWordsAccordingToSentence( words, sentence ):
+    positions = [ re.search( word, sentence).start() for word in words ]
+    #print( print(re.search() )
+    #print(positions)
+    sortedWords = [ word for position, word in sorted(zip(positions, words)) ]
+
+    return sortedWords
+
+
+def glueWordsFromTranslationField( words ):
+
+    return ", ".join(list(map(str.strip, words)))
 
 
 #TODO: we need to search for the sentence without the bold and with /b before and after the word
 def glueTranslationFieldsInOrder( sentence, firstTranslationField, secondTranslationField ):
-    firstWord = getWordFromTranslationField( firstTranslationField )
-    secondWord = getWordFromTranslationField( secondTranslationField )
-    if( getPositionOfTheWord(sentence, firstWord) < getPositionOfTheWord(sentence, secondWord) ):
-        newTranslated = firstTranslationField.strip(" ") + ", " + secondTranslationField.strip(" ")
-    else:
-        newTranslated = secondTranslationField.strip(" ") + ", " + firstTranslationField.strip(" ")
+    listOfWordsWithTranslation = splitTranslationField( firstTranslationField ) + splitTranslationField( secondTranslationField )
+    words = [ getWordFromTranslationField( wordWithTranslation ) for wordWithTranslation in listOfWordsWithTranslation ]
+    words = sortWordsAccordingToSentence( words, sentence )
+    newTranslationField = glueWordsFromTranslationField( words )
 
-    return newTranslated
+    return newTranslationField
 
 
 def mergeCards( firstCard, secondCard ):
