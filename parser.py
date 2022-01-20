@@ -182,8 +182,8 @@ if __name__ == "__main__":
 
     #Comment this block if you want a faster runtime
     for card in cards:
-        card = addHoleSentenceTranslation(card)
-        no_repetition.write(card)
+        card = addHoleSentenceTranslation(card.strip("\n"))
+        no_repetition.write(card+"\n")
 
     os.remove("parsed.txt")
     no_repetition.close()
