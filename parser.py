@@ -4,18 +4,6 @@ import os
 from googletrans import Translator
 
 
-def removeBold( sentence ):
-
-    return re.sub("<b>|</b>","", sentence)
-
-
-def createBold( sentence ):
-    sentence = re.sub( "\[\[", "<b>", sentence )
-    sentence = re.sub( "]]", "</b>", sentence )
-
-    return sentence
-
-
 def separateFields( card ):
 
     return card.split(";")
@@ -38,25 +26,16 @@ def firstFieldMatches( first, second ):
     return ( removeBold(first) == removeBold(second) )
 
 
-def transferBoldThroughSentences( first, second ):
-    one = first.split(" ")
-    two = second.split(" ")
-    for word, i in zip(two, range(len(two))):
-        if( "<b>" in word ):
-            one[i] = word
+def removeBold( sentence ):
 
-    return ' '.join(one)
+    return re.sub("<b>|</b>","", sentence)
 
 
-def getWordFromTranslationField( translationField ):
+def createBold( sentence ):
+    sentence = re.sub( "\[\[", "<b>", sentence )
+    sentence = re.sub( "]]", "</b>", sentence )
 
-    return removeBold( translationField ).split(" ")[0].strip(":")
-
-
-# TODO: should return error or exception if the word is not contained
-def getPositionOfTheWord( sentence, word ):
-
-    return re.search(word, sentence).start()
+    return sentence
 
 
 def whoIsBold( sentence ):
@@ -65,6 +44,12 @@ def whoIsBold( sentence ):
         if("<b>" in word):
 
             return word
+
+
+# TODO: should return error or exception if the word is not contained
+def getPositionOfTheWord( sentence, word ):
+
+    return re.search(word, sentence).start()
 
 
 def substituteTranslationOfTheWord( card ):
@@ -83,6 +68,35 @@ def formatTranslatedField( card ):
     translated = word + "<b>: </b>" + translated
 
     return joinFields(sentence,translated)
+
+
+#bug found
+def shortenFirstField( card ):
+    sentence, translation = separateFields( card )
+    subsentences = re.split("–|;|!|\.|'|\"|«|:|»|,", sentence)
+    for subsentence in subsentences :
+        if '[[' in subsentence :
+
+            return subsentence.strip(" ") + ";" + translation
+
+
+def getWordFromTranslationField( translationField ):
+
+    return removeBold( translationField ).split(" ")[0].strip(":")
+
+
+def transferBoldThroughSentences( first, second ):
+    one = first.split(" ")
+    two = second.split(" ")
+    for word, i in zip(two, range(len(two))):
+        if( "<b>" in word ):
+            one[i] = word
+
+    return ' '.join(one)
+
+
+def sortWordsFromTranslationField( translationField, sentence ):
+    pass
 
 
 #TODO: we need to search for the sentence without the bold and with /b before and after the word
@@ -106,14 +120,16 @@ def mergeCards( firstCard, secondCard ):
     return joinFields( newSentence, newTranslationField )
 
 
-#bug found
-def shortenFirstField( card ):
-    sentence, translation = separateFields( card )
-    subsentences = re.split("–|;|!|\.|'|\"|«|:|»|,", sentence)
-    for subsentence in subsentences :
-        if '[[' in subsentence :
+def removeRepetitions( cards ):
+    for i in range( len(cards)-1, -1, -1 ):
+        for j in range( len(cards)-1, i, -1 ):
+            if( firstFieldMatches( cards[i], cards[j] ) ):
+                cards[i]=cards[i].strip("\n")
+                cards[j]=cards[j].strip("\n")
+                cards[i] = mergeCards( cards[i], cards[j] )+"\n"
+                del cards[j]
 
-            return subsentence.strip(" ") + ";" + translation
+    return cards
 
 
 #sometimes having the words translated is not enough.
@@ -125,18 +141,6 @@ def addHoleSentenceTranslation( card ):
     translations = translations + "<br>" + sentenceTranslation.text
 
     return joinFields(sentence,translations)
-
-
-def removeRepetitions( cards ):
-    for i in range( len(cards)-1, -1, -1 ):
-        for j in range( len(cards)-1, i, -1 ):
-            if( firstFieldMatches( cards[i], cards[j] ) ):
-                cards[i]=cards[i].strip("\n")
-                cards[j]=cards[j].strip("\n")
-                cards[i] = mergeCards( cards[i], cards[j] )+"\n"
-                del cards[j]
-
-    return cards
 
 
 #TODO: traducao da frase toda aparece duas vezes
@@ -163,6 +167,7 @@ if __name__ == "__main__":
     cards = parsed_file.readlines()
     cards = removeRepetitions(cards)
 
+    #Comment this block if you want a faster runtime
     for card in cards:
         card = addHoleSentenceTranslation(card)
         no_repetition.write(card)
