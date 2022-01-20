@@ -100,26 +100,29 @@ def splitTranslationField( translationField ):
     return translationField.split(",")
 
 
-def sortWordsAccordingToSentence( words, sentence ):
-    positions = [ re.search( word, sentence).start() for word in words ]
-    #print( print(re.search() )
-    #print(positions)
-    sortedWords = [ word for position, word in sorted(zip(positions, words)) ]
+def getPositionsOfWordsInSentence( words, sentence ):
 
-    return sortedWords
+    return [ re.search( word, sentence ).start() for word in words ]
 
 
-def glueWordsFromTranslationField( words ):
+def sortFieldsAccordingToList( fields, positions ):
+    sortedFields = [ field for position, field in sorted(zip(positions, fields)) ]
+
+    return sortedFields
+
+
+def glueTranslations( words ):
 
     return ", ".join(list(map(str.strip, words)))
 
 
 #TODO: we need to search for the sentence without the bold and with /b before and after the word
 def glueTranslationFieldsInOrder( sentence, firstTranslationField, secondTranslationField ):
-    listOfWordsWithTranslation = splitTranslationField( firstTranslationField ) + splitTranslationField( secondTranslationField )
-    words = [ getWordFromTranslationField( wordWithTranslation ) for wordWithTranslation in listOfWordsWithTranslation ]
-    words = sortWordsAccordingToSentence( words, sentence )
-    newTranslationField = glueWordsFromTranslationField( words )
+    translations = splitTranslationField( firstTranslationField ) + splitTranslationField( secondTranslationField )
+    words = [ getWordFromTranslationField( translation ) for translation in translations ]
+    positions = getPositionsOfWordsInSentence( words, sentence )
+    sortedTranslations = sortFieldsAccordingToList( translations, positions )
+    newTranslationField = glueTranslations( sortedTranslations )
 
     return newTranslationField
 
