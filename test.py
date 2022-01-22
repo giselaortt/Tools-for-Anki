@@ -131,6 +131,7 @@ class TestParser( unittest.TestCase ):
 
 
     '''
+    Not testable because the google api returns diferent values for the same input.
     def testAddHoleSentenceTranslation( self ):
          test = "Der Teufel soll das alles <b>holen</b>;buscar"
          expected = "Der Teufel soll das alles <b>holen</b>;buscar<br>Deixe o diabo <b> pegar </b> tudo isso"
@@ -156,15 +157,31 @@ class TestParser( unittest.TestCase ):
         self.assertEqual( getWordFromTranslationField(test), expected )
 
 
+    def testGetPositionsOfWordsInSentence( self ):
+        pass
+
+
+    def testGlueTranslations( self ):
+        pass
+
+
     def testGlueTranslationFieldsInOrder( self ):
         testSentence = "Der <b>Teufel</b> soll das alles <b>holen</b>;"
-        testFirstTranslationField = "Teufel: demonio"
-        testSecondTranslationField = " holen: buscar"
-        expected = "holen: buscar, Teufel: demonio"
+        testFirstTranslationField = " holen: buscar"
+        testSecondTranslationField = " Teufel: demonio"
+        expected = "Teufel: demonio, holen: buscar"
         self.assertEqual( glueTranslationFieldsInOrder(testSentence, testFirstTranslationField, testSecondTranslationField), expected )
 
 
-    def testGetPositionOfTheWord( self ):
+    def testGlueTranslationFieldsInOrderWith3Translations( self ):
+        testSentence = "Der <b>Teufel</b> soll das <b>alles</b> <b>holen</b>;"
+        testFirstTranslationField = " holen: buscar"
+        testSecondTranslationField = " Teufel: demonio, alles: todos"
+        expected = "Teufel: demonio, alles: todos, holen: buscar"
+        self.assertEqual( glueTranslationFieldsInOrder(testSentence, testFirstTranslationField, testSecondTranslationField), expected )
+
+
+    def testSortFieldsAccordingToList( self ):
         pass
 
 
