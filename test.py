@@ -1,5 +1,6 @@
 import unittest
 from parser import *
+from nounsParsing import *
 
 #TODO: rename de functions
 class TestParser( unittest.TestCase ):
@@ -181,8 +182,20 @@ class TestParser( unittest.TestCase ):
         self.assertEqual( glueTranslationFieldsInOrder(testSentence, testFirstTranslationField, testSecondTranslationField), expected )
 
 
+    def testCleanCard( self ):
+        testeCard = "Hand [anki:play:q:0]	Die Hand , Die Hände Hand [anki:play:a:0]"
+        expected = "Hand 	Die Hand , Die Hände Hand "
+        self.assertEqual( cleanCard(testeCard), expected )
+
+
     def testSortFieldsAccordingToList( self ):
         pass
+
+
+    def testSeparateFieldsWithTab( self ):
+        test = "Auge	Das Auge , Die Augen Eye"
+        expected = ['Auge', 'Das Auge , Die Augen Eye']
+        self.assertEqual( separateFieldsWithTab(test), expected )
 
 
 if __name__ == '__main__':
