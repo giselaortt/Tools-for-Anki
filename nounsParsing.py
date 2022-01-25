@@ -15,31 +15,39 @@ def cleanCard( card ):
 
 def getWordAndPlural( field ):
     words = field.split(" ")
-    print(words)
     return words[1], words[4]
 
 
 def checkIfWordsAreSimilar( first, second ):
-    if( SequenceMatcher( None, first, second ).ratio() > 0.5 and first[0]==second[0] and first[1]==second[1] and first[2]==second[2] ):
+    if( SequenceMatcher( None, first, second ).ratio() > 0.5 ):
         return True
     else:
         return False
 
 
+def fieldIncludePlural( card ):
+
+    return re.search( " , ", card )
+
+
 #TODO: bug fix: some words dont have plural
 if __name__ == "__main__":
     input_file = open(sys.argv[1],'r')
-    parsed_file = open("parsed.txt", 'w+')
+    parsed_file = open("parsedNouns.txt", 'w+')
+    excluded = open("excluded.txt", "w+")
 
     for line in input_file.readlines():
         cleanLine = cleanCard(line)
-        secondField = separateFields(cleanLine)[1]
-        singular, plural = getWordAndPlural( secondField )
-        if( checkIfWordsAreSimilar(singular, plural) ):
-            parsed_file.write(cleanLine)
-            #parsed_file.write("\n")
+        secondField = separateFieldsWithTab(cleanLine)[1]
+        if( fieldIncludePlural( secondField ) ):
+            singular, plural = getWordAndPlural( secondField )
+            if( checkIfWordsAreSimilar(singular, plural) ):
+                parsed_file.write(cleanLine)
+            else:
+                excluded.write(cleanLine)
         else:
-            pass
+            parsed_file.write(cleanLine)
 
     parsed_file.close()
     input_file.close()
+    excluded.close()
