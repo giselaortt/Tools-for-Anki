@@ -25,9 +25,16 @@ def checkIfWordsAreSimilar( first, second ):
         return False
 
 
-def fieldIncludePlural( card ):
+def fieldIncludePlural( field ):
 
-    return re.search( " , ", card )
+    return re.search( " , ", field )
+
+
+def isFormattingCompliant( field ):
+    if( len(field.split(" ")) == 5 ):
+        return True
+    else:
+        return False
 
 
 #TODO: bug fix: some words dont have plural
@@ -39,6 +46,8 @@ if __name__ == "__main__":
     for line in input_file.readlines():
         cleanLine = cleanCard(line)
         secondField = separateFieldsWithTab(cleanLine)[1]
+        if( isFormattingCompliant( secondField ) == False ):
+            continue
         if( fieldIncludePlural( secondField ) ):
             singular, plural = getWordAndPlural( secondField )
             if( checkIfWordsAreSimilar(singular, plural) ):
