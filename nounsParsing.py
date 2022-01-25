@@ -3,14 +3,14 @@ from difflib import SequenceMatcher
 import sys
 
 
-def separateFields( card ):
+def separateFieldsWithTab( card ):
 
     return card.split("\t")
 
 
 def cleanCard( card ):
 
-    return re.sub( "\[\[[\w*]\]\]","",card )
+    return re.sub( "\[.{12,13}]","",card )
 
 
 def getWordAndPlural( field ):
@@ -25,6 +25,7 @@ def checkIfWordsAreSimilar( first, second ):
     else:
         return False
 
+
 #TODO: bug fix: some words dont have plural
 if __name__ == "__main__":
     input_file = open(sys.argv[1],'r')
@@ -32,7 +33,7 @@ if __name__ == "__main__":
 
     for line in input_file.readlines():
         cleanLine = cleanCard(line)
-        secondField= separateFields(cleanLine)[1]
+        secondField = separateFields(cleanLine)[1]
         singular, plural = getWordAndPlural( secondField )
         if( checkIfWordsAreSimilar(singular, plural) ):
             parsed_file.write(cleanLine)
