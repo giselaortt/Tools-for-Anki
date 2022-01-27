@@ -18,10 +18,30 @@ def getWordAndPlural( field ):
     return words[1], words[4]
 
 
-#TODO: improve the method to find who is plural
-def checkIfWordsAreSimilar( first, second ):
-    if( SequenceMatcher( None, first, second ).ratio() > 0.5 ):
+#TODO: needs debugind
+def areLettersEqualWithTrema( word, secondWord, n ):
+    if( word[n] == "Ä" and secondWord[n] == "A" ):
         return True
+    if( word[n] == "Ë" and secondWord[n] == "E" ):
+        return True
+    if( word[n] == "ä" and secondWord[n] == "a" ):
+        return True
+    if( word[n] == "ë" and secondWord[n] == "e" ):
+        return True
+    if( word[n] == secondWord[n] ):
+        return True
+    return False
+
+
+#TODO: improve the method to find who is plural
+def areWordsSimilar( first, second ):
+    #se a primeira letra for igual ou igual com trema
+    if( areLettersEqualWithTrema(first, second, 0) and areLettersEqualWithTrema(first, second,1) ):
+        if( SequenceMatcher( None, first, second ).ratio() > 0.5 ):
+            return True
+        else:
+            print( SequenceMatcher( None, first, second ).ratio(), first, second )
+            return False
     else:
         return False
 
@@ -31,6 +51,7 @@ def fieldIncludePlural( field ):
     return re.search( " , ", field )
 
 
+#TODO: debug
 def isFormattingCompliant( field ):
     if( len(field.split(" ")) == 5 ):
         return True
@@ -65,14 +86,14 @@ if __name__ == "__main__":
         if( isFormattingCompliant( secondField )  ):
             if( fieldIncludePlural( secondField ) ):
                 word, plural = getWordAndPlural( secondField )
-                if( checkIfWordsAreSimilar( word, plural ) ):
+                if( areWordsSimilar( word, plural ) ):
                     parsed_file.write(answer)
                 else:
-                    excluded.write(answer)
+                    excluded.write("reason:non plural  "+answer)
             else:
                 parsed_file.write(answer)
         else:
-            excluded.write(answer)
+            excluded.write("reason: non-compliant "+answer)
 
     parsed_file.close()
     input_file.close()

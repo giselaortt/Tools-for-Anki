@@ -198,5 +198,29 @@ class TestParser( unittest.TestCase ):
         self.assertEqual( separateFieldsWithTab(test), expected )
 
 
+    def testJoinFields( self ):
+        pass
+
+
+    def testCreateThirdField( self ):
+        pass
+
+
+    def testisFormattingCompliant( self ):
+        pass
+
+
+    def testFieldIncludePlural( self ):
+        pass
+
+
+    def testCheckIfWordsAreSimilar( self ):
+        pass
+
+
+    def testGetWordAndPlural( self ):
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()
