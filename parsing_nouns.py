@@ -18,18 +18,22 @@ def getWordAndPlural( field ):
     return words[1], words[4]
 
 
-#TODO: needs debugind
 def areLettersEqualWithTrema( word, secondWord, n ):
-    if( word[n] == "Ä" and secondWord[n] == "A" ):
+    if( (word[n] == "Ä" and secondWord[n] == "A") or (word[n] == "A" and secondWord[n] == "Ä") ):
         return True
-    if( word[n] == "Ë" and secondWord[n] == "E" ):
+    if( (word[n] == "Ë" and secondWord[n] == "E") or (word[n] == "E" and secondWord[n] == "Ë") ):
         return True
-    if( word[n] == "ä" and secondWord[n] == "a" ):
+    if( (word[n] == "ä" and secondWord[n] == "a") or (word[n] == "a" and secondWord[n] == "ä") ):
         return True
-    if( word[n] == "ë" and secondWord[n] == "e" ):
+    if( (word[n] == "ë" and secondWord[n] == "e") or (word[n] == "e" and secondWord[n] == "ë") ):
         return True
-    if( word[n] == secondWord[n] ):
+    if( (word[n] == "o" and secondWord[n] == "ö") or (word[n] == "ö" and secondWord[n] == "o") ):
         return True
+    if( (word[n] == "Ö" and secondWord[n] == "O") or (word[n] == "O" and secondWord[n] == "Ö") ):
+        return True
+    if( word[n] == secondWord[n]):
+        return True
+
     return False
 
 
@@ -48,7 +52,7 @@ def areWordsSimilar( first, second ):
 
 def fieldIncludePlural( field ):
 
-    return re.search( " , ", field )
+    return re.search( ",", field )
 
 
 #TODO: debug
