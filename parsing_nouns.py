@@ -13,6 +13,7 @@ def cleanCard( card ):
     return re.sub( "\[.{12,13}]","",card )
 
 
+#TODO: debug
 def getWordAndPlural( field ):
     words = field.split(" ")
     return words[1], words[4]
@@ -27,9 +28,11 @@ def areLettersEqualWithTrema( word, secondWord, n ):
         return True
     if( (word[n] == "ë" and secondWord[n] == "e") or (word[n] == "e" and secondWord[n] == "ë") ):
         return True
-    if( (word[n] == "o" and secondWord[n] == "ö") or (word[n] == "ö" and secondWord[n] == "o") ):
+    if( (word[n] == "o" and secondWord[n] == "ö") or (word[n] == "ö" and secondWord[n] == "o" )):
         return True
     if( (word[n] == "Ö" and secondWord[n] == "O") or (word[n] == "O" and secondWord[n] == "Ö") ):
+        return True
+    if( word[n]==secondWord[n] ):
         return True
 
     return False
@@ -41,9 +44,8 @@ def areWordsSimilar( first, second ):
 
 
 def doesInitialLettersMatch( first, second ):
-    if((first[0]==second[0] or areLettersEqualWithTrema(first, second, o) ) and (first[1]==second[1] or areLettersEqualWithTrema(first,second,1) )):
 
-        return True
+    return (areLettersEqualWithTrema(first,second,0) and  areLettersEqualWithTrema(first,second,1))
 
 
 def areWordsPlural( first, second ):
@@ -56,7 +58,7 @@ def fieldIncludePlural( field ):
     return re.search( ",", field )
 
 
-#TODO: debug
+#TODO: improve this function
 def isFormattingCompliant( field ):
     if( len(field.split(" ")) == 5 ):
         return True
@@ -77,7 +79,7 @@ def joinFields( firstField, secondField, thirdField ):
     return ";".join([firstField.strip(" "), secondField.strip(" "), thirdField.strip(" ")])+"\n"
 
 
-#TODO: Refactor
+#TODO: Refactor the main
 if __name__ == "__main__":
     input_file = open(sys.argv[1],'r')
     parsed_file = open("parsedNouns.txt", 'w')
@@ -91,7 +93,7 @@ if __name__ == "__main__":
         if( isFormattingCompliant( secondField )  ):
             if( fieldIncludePlural( secondField ) ):
                 word, plural = getWordAndPlural( secondField )
-                if( areWordsSimilar( word, plural ) ):
+                if( areWordsPlural( word, plural ) ):
                     parsed_file.write(answer)
                 else:
                     excluded.write("reason:non plural  "+answer)
