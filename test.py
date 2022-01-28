@@ -1,6 +1,6 @@
 import unittest
-from parser import *
-from nounsParsing import *
+from parsing_from_readlang import *
+from parsing_nouns import *
 
 #TODO: rename de functions
 class TestParser( unittest.TestCase ):
@@ -131,15 +131,6 @@ class TestParser( unittest.TestCase ):
         self.assertEqual(shortenFirstField(test), expected)
 
 
-    '''
-    Not testable because the google api returns diferent values for the same input.
-    def testAddHoleSentenceTranslation( self ):
-         test = "Der Teufel soll das alles <b>holen</b>;buscar"
-         expected = "Der Teufel soll das alles <b>holen</b>;buscar<br>Deixe o diabo <b> pegar </b> tudo isso"
-         self.assertEqual(expected, addHoleSentenceTranslation(test) )
-    '''
-
-
     def testSubstituteTranslationOfTheWord( self ):
         test = "Der Teufel soll das alles <b>holen</b>;wrong"
         expected = "Der Teufel soll das alles <b>holen</b>;buscar"
@@ -184,12 +175,8 @@ class TestParser( unittest.TestCase ):
 
     def testCleanCard( self ):
         testeCard = "Hand [anki:play:q:0]	Die Hand , Die Hände Hand [anki:play:a:0]"
-        expected = "Hand 	Die Hand , Die Hände Hand "
+        expected = "Hand 	Die Hand, Die Hände Hand"
         self.assertEqual( cleanCard(testeCard), expected )
-
-
-    def testSortFieldsAccordingToList( self ):
-        pass
 
 
     def testSeparateFieldsWithTab( self ):
@@ -198,28 +185,23 @@ class TestParser( unittest.TestCase ):
         self.assertEqual( separateFieldsWithTab(test), expected )
 
 
-    def testJoinFields( self ):
-        pass
+    def testAreLettersEqualWithTrema( self ):
+        self.assertTrue( areLettersEqualWithTrema("ü", "u") )
+        self.assertTrue( areLettersEqualWithTrema("ö", "o") )
+        self.assertTrue( areLettersEqualWithTrema("ë", "e") )
 
 
-    def testCreateThirdField( self ):
-        pass
+    def testDoesInitialLettersMatch( self ):
+        self.assertTrue( doesInitialLettersMatch('Wurf', 'Würfe'))
 
 
-    def testisFormattingCompliant( self ):
-        pass
-
-
-    def testFieldIncludePlural( self ):
-        pass
-
-
-    def testCheckIfWordsAreSimilar( self ):
-        pass
-
-
-    def testGetWordAndPlural( self ):
-        pass
+    def testAreWordsPlural( self ):
+        word = "Man"
+        plural = "Männer"
+        self.assertTrue( areWordsPlural(word, plural) )
+        word = "Rad"
+        plural = "Räder"
+        self.assertTrue( areWordsPlural(word,plural) )
 
 
 if __name__ == '__main__':
