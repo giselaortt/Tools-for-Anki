@@ -31,23 +31,24 @@ def areLettersEqualWithTrema( word, secondWord, n ):
         return True
     if( (word[n] == "Ö" and secondWord[n] == "O") or (word[n] == "O" and secondWord[n] == "Ö") ):
         return True
-    if( word[n] == secondWord[n]):
-        return True
 
     return False
 
 
-#TODO: improve the method to find who is plural
 def areWordsSimilar( first, second ):
-    #se a primeira letra for igual ou igual com trema
-    if( areLettersEqualWithTrema(first, second, 0) and areLettersEqualWithTrema(first, second,1) ):
-        if( SequenceMatcher( None, first, second ).ratio() > 0.5 ):
-            return True
-        else:
-            print( SequenceMatcher( None, first, second ).ratio(), first, second )
-            return False
-    else:
-        return False
+
+    return (SequenceMatcher( None, first, second ).ratio() > 0.5)
+
+
+def doesInitialLettersMatch( first, second ):
+    if((first[0]==second[0] or areLettersEqualWithTrema(first, second, o) ) and (first[1]==second[1] or areLettersEqualWithTrema(first,second,1) )):
+
+        return True
+
+
+def areWordsPlural( first, second ):
+
+    return (areWordsSimilar( first, second ) and doesInitialLettersMatch( first, second ))
 
 
 def fieldIncludePlural( field ):
