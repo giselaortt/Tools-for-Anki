@@ -27,6 +27,11 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
 ## Problems to be fixed:
   - Slow.
 
+## Bonus!
+  Implemented a parser for this Anki dataset: https://ankiweb.net/shared/info/1852912768
+  It excludes bad entrances!
+
+
 ### How to use:
   You need to have python3 installed.
   
