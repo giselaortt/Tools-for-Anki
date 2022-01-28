@@ -1,6 +1,7 @@
 import re
 from difflib import SequenceMatcher
 import sys
+from unidecode import unidecode
 
 
 def separateFieldsWithTab( card ):
@@ -9,6 +10,7 @@ def separateFieldsWithTab( card ):
 
 
 def cleanExtraSpaces( field ):
+    field = re.sub(",",", ", field)
     field = re.sub(" {2,}", " ", field).strip()
     field = re.sub(" ,",",", field)
 
@@ -23,6 +25,7 @@ def cleanAnkiInformation( card ):
 def cleanCard( card ):
     card = cleanAnkiInformation(card)
     card = cleanExtraSpaces(card)
+    card = card.strip("\n")
 
     return card
 
@@ -32,10 +35,11 @@ def isArticle( word ):
     return ( word=="der" or word=="die" or word=="das" )
 
 
-def isFormattingCompliant( field ):
-    words = field.split()
-
+def isFormattingCompliant( words ):
     if( not isArticle(words[0].lower()) ):
+        return False
+
+    if( len(words) != 4 and len(words) != 2 ):
         return False
 
     if( words[2].lower() != "die" ):
@@ -47,7 +51,7 @@ def isFormattingCompliant( field ):
     return True
 
 
-def improveFormatting( field ):
+def improveFormatting( words ):
     pass
 
 
@@ -57,42 +61,27 @@ def getWordAndPlural( field ):
     return words[1], words[3]
 
 
-#TODO DEBUG
 def createThirdField( secondField ):
-    splited = secondField.strip(" \n").split(" ")
-    thirdField = splited[-1]
-    secondField = ' '.join( splited[0:-1] )
+    words = secondField.split(" ")
+    thirdField = ' '.join( words[4:] )
+    secondField = ' '.join( words[0:4] )
 
     return secondField, thirdField
 
 
-def areLettersEqualWithTrema( word, secondWord, n ):
-    if( (word[n] == "Ä" and secondWord[n] == "A") or (word[n] == "A" and secondWord[n] == "Ä") ):
-        return True
-    if( (word[n] == "Ë" and secondWord[n] == "E") or (word[n] == "E" and secondWord[n] == "Ë") ):
-        return True
-    if( (word[n] == "ä" and secondWord[n] == "a") or (word[n] == "a" and secondWord[n] == "ä") ):
-        return True
-    if( (word[n] == "ë" and secondWord[n] == "e") or (word[n] == "e" and secondWord[n] == "ë") ):
-        return True
-    if( (word[n] == "o" and secondWord[n] == "ö") or (word[n] == "ö" and secondWord[n] == "o")):
-        return True
-    if( (word[n] == "Ö" and secondWord[n] == "O") or (word[n] == "O" and secondWord[n] == "Ö") ):
-        return True
-    if( word[n]==secondWord[n] ):
-        return True
+def areLettersEqualWithTrema( char, otherChar ):
 
-    return False
+    return ( unidecode(char) == unidecode(otherChar) )
 
 
 def doesInitialLettersMatch( first, second ):
 
-    return (areLettersEqualWithTrema(first,second,0) and  areLettersEqualWithTrema(first,second,1))
+    return (areLettersEqualWithTrema(first[0],second[0]) and  areLettersEqualWithTrema(first[1],second[1]))
 
 
 def areWordsSimilar( first, second ):
 
-    return (SequenceMatcher( None, first, second ).ratio() > 0.5)
+    return (SequenceMatcher( None, unidecode(first).lower(), unidecode(second).lower() ).ratio() > 0.5)
 
 
 def areWordsPlural( first, second ):
@@ -101,8 +90,11 @@ def areWordsPlural( first, second ):
 
 
 def fieldIncludePlural( field ):
-
-    return re.search( ",", field )
+    if( re.search( "---", field ) ):
+        return False
+    if( re.search(",", field) ):
+        return True
+    return False
 
 
 def joinFields( firstField, secondField, thirdField ):
@@ -110,7 +102,6 @@ def joinFields( firstField, secondField, thirdField ):
     return ";".join([firstField.strip(" "), secondField.strip(" "), thirdField.strip(" ")])+"\n"
 
 
-#TODO: Refactor the main
 if __name__ == "__main__":
     input_file = open(sys.argv[1],'r')
     parsed_file = open("parsedNouns.txt", 'w')
@@ -121,19 +112,15 @@ if __name__ == "__main__":
         firstField, secondField = separateFieldsWithTab(cleanLine)
         secondField, thirdField = createThirdField( secondField )
         answer = joinFields( firstField, secondField, thirdField )
-        if( fieldIncludePlural( secondField )  ):
-            if( isFormattingCompliant( secondField ) ):
-                print(secondField)
-                word, plural = getWordAndPlural( secondField )
-                print("word and plural", word, plural)
-                if( areWordsPlural( word, plural ) ):
-                    parsed_file.write(answer)
-                else:
-                    excluded.write("reason:non plural  "+answer)
-            else:
+
+        if( not fieldIncludePlural( secondField )  ):
+            parsed_file.write(answer)
+            continue
+
+        if( isFormattingCompliant( secondField.split(" ") ) ):
+            word, plural = getWordAndPlural( secondField )
+            if( areWordsPlural( word, plural ) ):
                 parsed_file.write(answer)
-        else:
-            excluded.write("reason: non-compliant "+answer)
 
     parsed_file.close()
     input_file.close()
