@@ -24,7 +24,7 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - OCR: extract text from the PDF's of the Goethe-tests.
   - Add TTS with google API
 
-## Problems to be fixed:
+## Problems:
   - Slow.
 
 ## Bonus!
