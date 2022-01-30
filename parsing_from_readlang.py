@@ -116,7 +116,6 @@ def glueTranslations( words ):
     return ", ".join(list(map(str.strip, words)))
 
 
-#TODO: we need to search for the sentence without the bold and with /b before and after the word
 def glueTranslationFieldsInOrder( sentence, firstTranslationField, secondTranslationField ):
     translations = splitTranslationField( firstTranslationField ) + splitTranslationField( secondTranslationField )
     words = [ getWordFromTranslationField( translation ) for translation in translations ]
@@ -148,7 +147,6 @@ def removeRepetitions( cards ):
     return cards
 
 
-#sometimes having the words translated is not enough.
 def addHoleSentenceTranslation( card ):
     sentence, translations = separateFields(card)
     sentenceWithoutBold = removeBold(sentence)
@@ -159,7 +157,6 @@ def addHoleSentenceTranslation( card ):
     return joinFields(sentence,translations)
 
 
-#TODO: traducao da frase toda aparece duas vezes
 #TODO: processar todas as frases de uma vez para maior eficiência
 if __name__ == "__main__":
     input_file = open(sys.argv[1],'r')
