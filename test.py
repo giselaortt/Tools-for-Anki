@@ -168,7 +168,7 @@ class TestParser( unittest.TestCase ):
     def testGlueTranslationFieldsInOrderWith3Translations( self ):
         testSentence = "Der <b>Teufel</b> soll das <b>alles</b> <b>holen</b>;"
         testFirstTranslationField = " holen: buscar"
-        testSecondTranslationField = " Teufel: demonio, alles: todos"
+        testSecondTranslationField = "alles: todos, Teufel: demonio"
         expected = "Teufel: demonio, alles: todos, holen: buscar"
         self.assertEqual( glueTranslationFieldsInOrder(testSentence, testFirstTranslationField, testSecondTranslationField), expected )
 
