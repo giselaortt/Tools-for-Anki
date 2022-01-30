@@ -114,14 +114,14 @@ class TestParser( unittest.TestCase ):
 
 
     def testRemoveRepetitionsWithThreeRepetitions( self ):
-        test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen; Teufel: demonio","Der Teufel soll <b>das</b> alles holen; o: a" ]
-        expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;o: a, Teufel: demonio, holen: buscar\n"]
+        test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen; Teufel: demonio","Der Teufel soll <b>das</b> alles holen; das: o(a)" ]
+        expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;Teufel: demonio, das: o(a), holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
 
     def testRemoveRepetitionsNoRepetition( self ):
-        test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen; Teufel: demonio","Der Teufel soll <b>das</b> alles holen; o: a" ]
-        expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;o: a, Teufel: demonio, holen: buscar\n"]
+        test = ["Der Teufel soll das alles <b>holen</b>;holen: buscar","Der <b>Teufel</b> soll das alles holen; Teufel: demonio","Der Teufel soll <b>das</b> alles holen; das: o(a)" ]
+        expected = ["Der <b>Teufel</b> soll <b>das</b> alles <b>holen</b>;Teufel: demonio, das: o(a), holen: buscar\n"]
         self.assertEqual( removeRepetitions(test), expected )
 
 
