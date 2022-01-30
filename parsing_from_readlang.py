@@ -82,7 +82,7 @@ def shortenFirstField( card ):
 
 def getWordFromTranslationField( translationField ):
 
-    return removeBold( translationField ).split(" ")[0].strip(":")
+    return removeBold( translationField ).strip(" ").split(" ")[0].strip(":")
 
 
 def transferBoldThroughSentences( first, second ):
@@ -118,10 +118,13 @@ def glueTranslations( words ):
 
 def glueTranslationFieldsInOrder( sentence, firstTranslationField, secondTranslationField ):
     translations = splitTranslationField( firstTranslationField ) + splitTranslationField( secondTranslationField )
+    print("translations",translations)
     words = [ getWordFromTranslationField( translation ) for translation in translations ]
+    print("words",words)
     positions = getPositionsOfWordsInSentence( words, sentence )
     sortedTranslations = sortFieldsAccordingToList( translations, positions )
     newTranslationField = glueTranslations( sortedTranslations )
+    print("sortedTranslations",sortedTranslations)
 
     return newTranslationField
 
