@@ -94,6 +94,7 @@ def fieldIncludePlural( field ):
         return False
     if( re.search(",", field) ):
         return True
+
     return False
 
 
