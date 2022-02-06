@@ -17,11 +17,11 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - adds the word in the foreing language by the side of the readlang Translation.
   - Integration with google translate in order to add the whole sentence translated to my flashcards.
   - Sort the order of words in sentences with several words selected
+  - OCR: extract text from the PDF's of the Goethe-tests.
 
 ### To be implemented:
   - Control for the size of the setences, not to end up with 1 word sentences.
   - Easier change of language. Currently contains only german to portuguese.
-  - OCR: extract text from the PDF's of the Goethe-tests.
   - Add TTS with google API
 
 ## Problems:
