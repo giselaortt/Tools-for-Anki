@@ -1,5 +1,6 @@
 import re
 import fitz
+import sys
 
 
 def formatting_fields():
@@ -21,7 +22,7 @@ def split_text_per_sections():
 def extract_text_from_pdf( pdf_file ):
     text = ""
     for page in pdf_file:
-        text += page.getText()
+        text += page.get_text()
 
     return text
 
@@ -40,11 +41,11 @@ def open_pdf( name ):
 
 
 if __name__ == "__main__":
-    pdf_file = open_pdf(sys.argv[1],'r')
-    output_file = open(sys.argv[2],'r')
+    pdf_file = open_pdf(sys.argv[1])
+    output_file = open(sys.argv[2],'w')
 
     txt = extract_text_from_pdf( pdf_file )
-    print( parse_text(txt) )
+    output_file.write(txt)
 
     pdf_file.close()
     output_file.close()
