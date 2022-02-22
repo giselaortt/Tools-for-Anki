@@ -21,6 +21,7 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - Sort the order of words in sentences with several words selected
   - a parser for this Anki [dataset](https://ankiweb.net/shared/info/1852912768) It excludes bad entrances!
   - extract text from the PDF's of the Goethe-tests and book with model tests using OCR
+  - estimation of my total german vocabulary
 
 ### To be implemented:
   - better control for the size of the setences, not to end up with 1 word sentences.
