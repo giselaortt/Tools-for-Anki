@@ -3,6 +3,27 @@ import fitz
 import sys
 
 
+def extract_text_from_pdf( pdf_file ):
+    text = ""
+    for page in pdf_file:
+        text += page.get_text()
+
+    return text
+
+
+def open_pdf( name ):
+
+    return fitz.open(name)
+
+
+def remove_page_mark( text ):
+    pass
+
+
+def parse_text( text ):
+    pass
+
+
 def formatting_fields():
     pass
 
@@ -17,27 +38,6 @@ def split_per_word():
 
 def split_text_per_sections():
     pass
-
-
-def extract_text_from_pdf( pdf_file ):
-    text = ""
-    for page in pdf_file:
-        text += page.get_text()
-
-    return text
-
-
-def remove_page_mark( text ):
-    pass
-
-
-def parse_text( text ):
-    pass
-
-
-def open_pdf( name ):
-
-    return fitz.open(name)
 
 
 if __name__ == "__main__":
