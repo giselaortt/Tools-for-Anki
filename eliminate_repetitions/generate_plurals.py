@@ -12,10 +12,10 @@ from unidecode import unidecode
 
 def generatePlurals():
     file_ptr = open("most frequent nouns", "r")
-    ans = open("most_frequent_nouns_with_plurals.txt", "w")
+    ans = open("most_frequent_nouns_with_plurals.txt", "a")
 
     cards = file_ptr.readlines()
-    for card in cards[2:10]:
+    for card in cards[10:11]:
         new_card = insertPluralInCard(card)
         ans.write(new_card)
         ans.write("\n")
@@ -24,7 +24,8 @@ def generatePlurals():
     file_ptr.close()
 
 
-def getPluralsFromWebRequest(word):
+def getPluralsFromWebRequest( word ):
+    print(word)
     ctx = ssl.create_default_context()
     basic_url = "https://www.verbformen.pt/declinacao/substantivos/?w="
     ctx.check_hostname = False
@@ -32,15 +33,14 @@ def getPluralsFromWebRequest(word):
     url = basic_url+word
     html = urllib.request.urlopen(url, context=ctx).read()
     soup = BeautifulSoup(html, 'html.parser')
-    tags = soup.find_all(class_="vStm rCntr")
-    for tag in tags:
-        plural=tag.get_text().split("\n")[-1]
-        plural=parsing(plural)
+    tag = soup.find(class_="vStm rCntr")
+    plural=tag.get_text().split("\n")[-1]
+    plural=parsing(plural)
         #if("/" in plural):
         #    plural = plural.split("/")[1]
-        print(plural)
+    print(plural)
 
-        return plural
+    return plural
 
 
 def insertPluralInCard( card ):
