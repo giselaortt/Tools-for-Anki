@@ -10,27 +10,10 @@ from googletrans import Translator
 from difflib import SequenceMatcher
 from nltk.stem.snowball import GermanStemmer
 
+
 stemmer = GermanStemmer()
 stemmer._GermanStemmer__step1_suffixes = ("innen", "in") + stemmer._GermanStemmer__step1_suffixes
-'''
-import urllib.request, urllib.parse, urllib.error
-from bs4 import BeautifulSoup
-import ssl
 
-# Ignore SSL certificate errors
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
-
-url = input('Enter - ')
-html = urllib.request.urlopen(url, context=ctx).read()
-soup = BeautifulSoup(html, 'html.parser')
-
-# Retrieve all of the anchor tags
-tags = soup('a')
-for tag in tags:
-    print(tag.get('href', None))
-'''
 
 def isCognato( word ):
     translator = Translator()
@@ -196,10 +179,6 @@ def separateNounsFromFrequencyDictionary( new_deck, output_file ):
             output_file.write(getFieldFromCard(card,3))
             output_file.write(";")
             output_file.write("\n")
-
-
-def checkPlural(noun):
-    pass
 
 
 if __name__ == "__main__":
