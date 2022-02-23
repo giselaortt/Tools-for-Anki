@@ -58,21 +58,6 @@ def parsing( text ):
     return re.sub("[^\p{L}|\/]", "", text)
 
 
-def getSecondField( card ):
-    
-    return card.split(";")[1]
-
-
-def getFirstField(card):
-
-    return card.split(";")[0]
-
-
-def getThirdField(card):
-
-    return card.split(";")[2]
-
-
 generatePlurals()
 
 '''
