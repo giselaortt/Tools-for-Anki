@@ -8,18 +8,35 @@ import parsers_deutsch_nouns.parsing_nouns
 from readlang_intgration.parsing import removeBold
 from googletrans import Translator
 from difflib import SequenceMatcher
-import nltk.stem.snowball.GermanStemmer
+from nltk.stem.snowball import GermanStemmer
 
 stemmer = GermanStemmer()
 stemmer._GermanStemmer__step1_suffixes = ("innen", "in") + stemmer._GermanStemmer__step1_suffixes
+'''
+import urllib.request, urllib.parse, urllib.error
+from bs4 import BeautifulSoup
+import ssl
 
+# Ignore SSL certificate errors
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
+url = input('Enter - ')
+html = urllib.request.urlopen(url, context=ctx).read()
+soup = BeautifulSoup(html, 'html.parser')
+
+# Retrieve all of the anchor tags
+tags = soup('a')
+for tag in tags:
+    print(tag.get('href', None))
+'''
 
 def isCognato( word ):
     translator = Translator()
     english = translator.translate(word, src='de', dest='en').text
     if(SequenceMatcher( None, english, word ).ratio() > 0.9):
         return True
-        print(word, english)
     else:
         return False
 
@@ -104,23 +121,24 @@ def getWordField( card ):
     return separateFieldsWithTab(card)[1]
 
 
+#todo: Refactor: should receive only the second field, and another function should get the field
 def parseFrequentDictionarySecondFild( card ):
     card = card.lower()
     wordField = getWordField( card )
     wordField = eliminateReflexivePronom( wordField )
     wordField = eliminateSufixes( wordField )
-    #sufixes = getSuffxes( wordField )
+    sufixes = getSuffxes( wordField )
     wordField = eliminateLegend( wordField )
     wordField = cleanExtraSpaces( wordField )
-    #if( sufixes is not None ):
-    #    words = glueSuffixes( wordField, sufixes )
-    if( "," in wordField ):
-        word = separateWords( wordField )[0]
-    #else:
-    #    words = [wordField]
-    word = applyStemmer(word)
+    if( sufixes is not None ):
+        words = glueSuffixes( wordField, sufixes )
+    elif( "," in wordField ):
+        words = separateWords( wordField )[0]
+    else:
+        words = wordField
+    #wordField = applyStemmer(wordField)
 
-    return word
+    return words
 
 
 def applyStemmer( word):
@@ -128,43 +146,81 @@ def applyStemmer( word):
     return stemmer.stem(word)
 
 
-if __name__ == "__main__":
-    #sys.path.append('../../')
-    current_vocabulary = open('Deutsch__vocabulary.txt',"r")
-    wordlist = open("wordlist.txt","w")
+def createVocabularySet( current_vocabulary ):
     my_vocabulary = set()
-
-    tmp = open("acceptedwords.txt", "w")
-    other = open("notaccepted.txt", "w")
-    
     for card in current_vocabulary.readlines():
         card = cleanCard(card)
         field = getFirstField(card)
         words = getWordsFromFirstField(field)
         for word in words:
-            my_vocabulary.add(applyStemmer(word.lower()))
+            #my_vocabulary.add(applyStemmer(word.lower()))
+            my_vocabulary.add(word.lower())
 
-    print(len(my_vocabulary))
+    return my_vocabulary
+
+
+def printSetInFile( my_vocabulary, wordlist ):
     for word in my_vocabulary:
         wordlist.write(word)
         wordlist.write("\n")
 
-    new_deck = open("A Frequency Dictionary of German.txt", "r")
-    output_deck = open("neu deutsch wortschatz.txt","w")
-    neue_worter = 0
-    not_added = 0
 
+def createNewDeck( new_deck, my_vocabulary, output_deck ):
     for line in  new_deck.readlines():
         words = parseFrequentDictionarySecondFild( line )
-        #if( bool(my_vocabulary.intersection(set(words))) ):
-        if( word not in my_vocabulary ):
-            not_added = not_added + 1
-            other.write(str(words))
-        else:
+        if( not bool(my_vocabulary.intersection(set(words))) ):
             output_deck.write(line)
-            neue_worter = neue_worter + 1
-            tmp.write(str(words))
 
+
+def getFieldFromCard( card, number ):
+
+    return separateFieldsWithTab(card)[number]
+
+
+def isNounCard( card ):
+    artikel = ["der","die","das"]
+    if( getFieldFromCard( card, 2 ) in artikel ):
+        return True
+    return False
+
+
+def separateNounsFromFrequencyDictionary( new_deck, output_file ):
+    for card in new_deck.readlines():
+        if(isNounCard(card)):
+            output_file.write(getFieldFromCard(card,1))
+            output_file.write(";")
+            output_file.write(getFieldFromCard(card,2))
+            output_file.write(" ")
+            output_file.write(getFieldFromCard(card,1))
+            output_file.write(";")
+            output_file.write(getFieldFromCard(card,3))
+            output_file.write(";")
+            output_file.write("\n")
+
+
+def checkPlural(noun):
+    pass
+
+
+if __name__ == "__main__":
+    #sys.path.append('../../')
+    current_vocabulary = open('Deutsch__vocabulary.txt',"r")
+    wordlist = open("wordlist.txt","w")
+    new_deck = open("A Frequency Dictionary of German.txt", "r")
+    output_deck = open("neu deutsch wortschatz.txt","w")
+    most_frequent_nouns = open("most frequent nouns", "w")
+
+    #my_vocabulary = createVocabularySet( current_vocabulary )
+    #printSetInFile( my_vocabulary, wordlist )
+    #createNewDeck( new_deck, my_vocabulary, output_deck )
+
+    separateNounsFromFrequencyDictionary( new_deck, most_frequent_nouns )
+
+    current_vocabulary.close()
+    most_frequent_nouns.close()
+    wordlist.close()
+    new_deck.close()
+    output_deck.close()
     # this is how you apply a function to every element in  place
     # list(map(lambda i:func(a, i), range(0, len(a))))
 
