@@ -3,7 +3,7 @@ import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 import ssl
 import os
-import re
+import regex as re
 import sys
 sys.path.insert(1, "/Users/giortt/Desktop/readlang_to_anki/")
 from readlang_intgration.parsing import separateFields
@@ -54,8 +54,8 @@ def insertPluralInCard( card ):
 def parsing( text ):
     #chars_with_trema = ["ä","ë","ü","ö","Ü","Ö","Ë"]
     #return re.sub("[^\w|ä|ë|ü|ö|Ü|Ö|Ë|\/]", "", text)
-    #return re.sub("\d", "", text)
-    pass
+
+    return re.sub("[^\p{L}|\/]", "", text)
 
 
 def getSecondField( card ):
@@ -74,7 +74,6 @@ def getThirdField(card):
 
 
 generatePlurals()
-
 
 '''
 <p class="vStm rCntr">
