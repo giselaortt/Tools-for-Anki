@@ -22,12 +22,12 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - a parser for this Anki [dataset](https://ankiweb.net/shared/info/1852912768) It excludes bad entrances!
   - extract text from the PDF's of the Goethe-tests and book with model tests using OCR
   - estimation of my total german vocabulary
+  - plural and gender correctedness checking with crawler and scrapping.
 
 ### To be implemented:
   - better control for the size of the setences, not to end up with 1 word sentences.
   - Easier change of language. Currently contains only german to portuguese.
   - Add TTS with google API
-  - plural and gender correctedness checking with crawler and scrapping.
   - getting highlighted words from images from website
 
 ## Problems:
