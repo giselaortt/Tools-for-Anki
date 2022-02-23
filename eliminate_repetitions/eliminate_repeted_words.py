@@ -8,13 +8,10 @@ import parsers_deutsch_nouns.parsing_nouns
 from readlang_intgration.parsing import removeBold
 from googletrans import Translator
 from difflib import SequenceMatcher
+import nltk.stem.snowball.GermanStemmer
 
-#abzeichnen (sich)
-#dfb (deutscher fußball-bund)
-#letzterer, letztere, letzteres
-#andere (r, s)
-#welch, -e, -er, -es
-#final (er, e, es)
+stemmer = GermanStemmer()
+stemmer._GermanStemmer__step1_suffixes = ("innen", "in") + stemmer._GermanStemmer__step1_suffixes
 
 
 def isCognato( word ):
@@ -107,25 +104,28 @@ def getWordField( card ):
     return separateFieldsWithTab(card)[1]
 
 
-
 def parseFrequentDictionarySecondFild( card ):
     card = card.lower()
     wordField = getWordField( card )
     wordField = eliminateReflexivePronom( wordField )
     wordField = eliminateSufixes( wordField )
-    sufixes = getSuffxes( wordField )
+    #sufixes = getSuffxes( wordField )
     wordField = eliminateLegend( wordField )
     wordField = cleanExtraSpaces( wordField )
-    if( sufixes is not None ):
-        words = glueSuffixes( wordField, sufixes )
-    elif( "," in wordField ):
-        words = separateWords( wordField )
-    else:
-        words = [wordField]
+    #if( sufixes is not None ):
+    #    words = glueSuffixes( wordField, sufixes )
+    if( "," in wordField ):
+        word = separateWords( wordField )[0]
+    #else:
+    #    words = [wordField]
+    word = applyStemmer(word)
 
-    if(words is None):
-        print(card)
-    return words
+    return word
+
+
+def applyStemmer( word):
+    
+    return stemmer.stem(word)
 
 
 if __name__ == "__main__":
@@ -136,13 +136,13 @@ if __name__ == "__main__":
 
     tmp = open("acceptedwords.txt", "w")
     other = open("notaccepted.txt", "w")
-
+    
     for card in current_vocabulary.readlines():
         card = cleanCard(card)
         field = getFirstField(card)
         words = getWordsFromFirstField(field)
         for word in words:
-            my_vocabulary.add(word.lower())
+            my_vocabulary.add(applyStemmer(word.lower()))
 
     print(len(my_vocabulary))
     for word in my_vocabulary:
@@ -156,17 +156,14 @@ if __name__ == "__main__":
 
     for line in  new_deck.readlines():
         words = parseFrequentDictionarySecondFild( line )
-        #bool(test_set & set(test_list))
-        #TODO: this if is not working, find out why
-        if( bool(my_vocabulary.intersection(set(words))) ):
+        #if( bool(my_vocabulary.intersection(set(words))) ):
+        if( word not in my_vocabulary ):
             not_added = not_added + 1
             other.write(str(words))
         else:
             output_deck.write(line)
             neue_worter = neue_worter + 1
             tmp.write(str(words))
-
-    print(neue_worter, not_added)
 
     # this is how you apply a function to every element in  place
     # list(map(lambda i:func(a, i), range(0, len(a))))
