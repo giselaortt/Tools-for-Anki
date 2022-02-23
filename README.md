@@ -1,4 +1,6 @@
-# Readlang_to_anki
+# Tools for Anki desktop app
+
+### Readlang_to_anki
 this script parses the files from [Readlang](https://readlang.com/) website in order to create a better importation on [Anki](https://apps.ankiweb.net/) desktop application, and save many hours of my time.
 
 
@@ -15,27 +17,19 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - Format the new learned word of the sentence with html bold.
   - it shortens the readlang sentences. Readlang exports flashcards way too long, making learning monotonous and slow, sometimes includding several sentences in the same field. Here I get the shortest sentence possible.
   - adds the word in the foreing language by the side of the readlang Translation.
-  - Integration with google translate in order to add the whole sentence translated to my flashcards.
+  - Integration with google translate in order to add the whole sentence translated to my flashcards automatically.
   - Sort the order of words in sentences with several words selected
-  - OCR: extract text from the PDF's of the Goethe-tests.
+  - a parser for this Anki [dataset](https://ankiweb.net/shared/info/1852912768) It excludes bad entrances!
+  - extract text from the PDF's of the Goethe-tests and book with model tests using OCR
+  - estimation of my total german vocabulary
 
 ### To be implemented:
-  - Control for the size of the setences, not to end up with 1 word sentences.
+  - better control for the size of the setences, not to end up with 1 word sentences.
   - Easier change of language. Currently contains only german to portuguese.
   - Add TTS with google API
+  - plural and gender correctedness checking with crawler and scrapping.
+  - getting highlighted words from images from website
 
 ## Problems:
   - Slow.
 
-## Bonus!
-  Implemented a parser for this Anki dataset: https://ankiweb.net/shared/info/1852912768
-  It excludes bad entrances!
-  - TODO: Implement plural correctedness checking with crawler and scrapping.
-
-
-### How to use:
-  You need to have python3 installed.
-  
-  Download the file parser.py to your computer. At Readlang, go to libery and export all your learned words. Through the terminal, access the location in witch you've downloaded the script, than run the script passing the file of the Readlang .txt though command line, for example:  `python3 parser.py 2021-12-19_ReadlangWords.txt`
-  
-  A new file will be created with the cards parsed. Import this new file in anki. You need to select "allow HTML in cards" option, and use ";" as a delimiter.
