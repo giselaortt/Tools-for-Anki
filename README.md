@@ -27,6 +27,7 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - extract text from the PDF's of the Goethe-tests and book with model tests using OCR
   - estimation of my total german vocabulary
   - plural and gender correctedness checking with crawler and scrapping.
+  - Eliminate repetitions: Add new flashcards to anki only if they are not already contained in the current deck.
 
 ### To be implemented:
   - better control for the size of the setences, not to end up with 1 word sentences.
