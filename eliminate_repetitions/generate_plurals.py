@@ -10,54 +10,72 @@ from readlang_intgration.parsing import separateFields
 from unidecode import unidecode
 
 
+def generatePlurals():
+    file_ptr = open("most frequent nouns", "r")
+    ans = open("most_frequent_nouns_with_plurals.txt", "w")
+
+    cards = file_ptr.readlines()
+    for card in cards[2:10]:
+        new_card = insertPluralInCard(card)
+        ans.write(new_card)
+        ans.write("\n")
+
+    ans.close()
+    file_ptr.close()
 
 
-def getPluralsFromWebRequest():
-    ans = open("answer.txt", "a")
-    # Ignore SSL certificate errors
+def getPluralsFromWebRequest(word):
     ctx = ssl.create_default_context()
     basic_url = "https://www.verbformen.pt/declinacao/substantivos/?w="
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
-    file_ptr = open("most frequent nouns", "r")
-    lines = file_ptr.readlines()
-    words = []
-    for line in lines:
-        words.append( separateFields(line)[0] )
-    plurals=[]
-    for word in words[1:10]:
-        url = basic_url+word
-        html = urllib.request.urlopen(url, context=ctx).read()
-        soup = BeautifulSoup(html, 'html.parser')
+    url = basic_url+word
+    html = urllib.request.urlopen(url, context=ctx).read()
+    soup = BeautifulSoup(html, 'html.parser')
+    tags = soup.find_all(class_="vStm rCntr")
+    for tag in tags:
+        plural=tag.get_text().split("\n")[-1]
+        plural=parsing(plural)
+        #if("/" in plural):
+        #    plural = plural.split("/")[1]
+        print(plural)
 
-        # Retrieve all of the anchor tags
-        tags = soup.find_all(class_="vStm rCntr")
-        for tag in tags:
-            print(tag.get_text().split("\n")[-1])
-            #ans.write(tag.get_text())
-
-        break
-
-    #print(unidecodeplurals)
-    #print(unidecode(plurals[0]))
-    ans.close()
+        return plural
 
 
-def cleanNumbers( card ):
+def insertPluralInCard( card ):
+    word, secondField, thirdField, _ = separateFields(card)
+    plural = getPluralsFromWebRequest(word)
+    new_card = word+"; "+secondField+", die "+plural+"; "+thirdField
 
-    return re.sub('[0-9]', '', card)
+    return new_card
 
 
-def parsing( ):
-    fileptr = open("answer.txt", "r")
-    lines = fileptr.readlines()
-    for line in lines:
-        print(cleanNumbers(line))
-    fileptr.close()
+def parsing( text ):
+    #chars_with_trema = ["ä","ë","ü","ö","Ü","Ö","Ë"]
+    #return re.sub("[^\w|ä|ë|ü|ö|Ü|Ö|Ë|\/]", "", text)
+    #return re.sub("\d", "", text)
+    pass
 
-parsing()
 
-#getPluralsFromWebRequest()
+def getSecondField( card ):
+    
+    return card.split(";")[1]
+
+
+def getFirstField(card):
+
+    return card.split(";")[0]
+
+
+def getThirdField(card):
+
+    return card.split(";")[2]
+
+
+generatePlurals()
+
+
 '''
 <p class="vStm rCntr">
 <b><i></i>Studium<i>s</i></b>
