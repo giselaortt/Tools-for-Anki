@@ -25,60 +25,57 @@ def generatePlurals():
     while( current_word != last_word ):
         card = file_ptr.readline()
         current_word = getFirstField( card )
-
     card = file_ptr.readline()
 
-    while( card != "" ): 
-        new_card = insertPluralInCard(card)
-        print(new_card)
+    #while( card != "" ): 
+    for i in range(300):
+        new_card = insertPluralInCard(card) )
         ans.write(new_card)
-        ans.write("\n")
+        print(new_card)
         card = file_ptr.readline()
-
     ans.close()
     file_ptr.close()
 
 
+def insertPluralInCard( card ):
+    word, secondField, thirdField, _ = separateFields(card)
+    plural = getPluralsFromWebRequest(word)
+    if( plural is not None and plural != "" ):
+        new_card = word+"; "+secondField+", die "+plural+"; "+thirdField+";"+"\n"
+    else:
+        new_card = card
+
+    return new_card
+
+
 def getPluralsFromWebRequest( word ):
     if(" " in word ):
-        word = word.split(" ")[0]
+        word = word.split(" ")[0].strip(",")
     ctx = ssl.create_default_context()
     basic_url = "https://www.verbformen.pt/declinacao/substantivos/?w="
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
     url = basic_url+unidecode(word)
     time.sleep(10)
-    time = 30
+    waiting_time = 30
 
     while( True ):
         try:
             html = urllib.request.urlopen(url, context=ctx).read()
             break
         except:
-            time.sleep(time)
-            time = time*2
+            time.sleep(waiting_time)
+            waiting_time = waiting_time*2
     
     soup = BeautifulSoup(html, 'html.parser')
     tag = soup.find(class_="vStm rCntr")
     if( tag is not None ):
         plural=tag.get_text().split("\n")[-1]
         plural=parsing(plural)
-        print(plural)
     else:
         plural = None
 
     return plural
-
-
-def insertPluralInCard( card ):
-    word, secondField, thirdField, _ = separateFields(card)
-    plural = getPluralsFromWebRequest(word)
-    if( plural is not None ):
-        new_card = word+"; "+secondField+", die "+plural+"; "+thirdField+";"
-    else:
-        new_card = card
-
-    return new_card
 
 
 def parsing( text ):
