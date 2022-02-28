@@ -9,8 +9,6 @@ from readlang_intgration.parsing import removeBold
 from googletrans import Translator
 from difflib import SequenceMatcher
 from nltk.stem.snowball import GermanStemmer
-
-
 stemmer = GermanStemmer()
 stemmer._GermanStemmer__step1_suffixes = ("innen", "in") + stemmer._GermanStemmer__step1_suffixes
 

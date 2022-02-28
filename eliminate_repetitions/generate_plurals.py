@@ -27,11 +27,11 @@ def generatePlurals():
         current_word = getFirstField( card )
     card = file_ptr.readline()
 
-    #while( card != "" ): 
-    for i in range(300):
-        new_card = insertPluralInCard(card) )
+    while( card != "" ): 
+    #for i in range(400):
+        new_card = insertPluralInCard(card)
         ans.write(new_card)
-        print(new_card)
+        print(new_card.strip("\n"))
         card = file_ptr.readline()
     ans.close()
     file_ptr.close()
@@ -56,7 +56,7 @@ def getPluralsFromWebRequest( word ):
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
     url = basic_url+unidecode(word)
-    time.sleep(10)
+    time.sleep(30)
     waiting_time = 30
 
     while( True ):
@@ -79,8 +79,6 @@ def getPluralsFromWebRequest( word ):
 
 
 def parsing( text ):
-    #chars_with_trema = ["ä","ë","ü","ö","Ü","Ö","Ë"]
-    #return re.sub("[^\w|ä|ë|ü|ö|Ü|Ö|Ë|\/]", "", text)
 
     return re.sub("[^\p{L}|\/]", "", text)
 
