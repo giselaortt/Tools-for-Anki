@@ -15,6 +15,14 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
 ### Motivation:
   Both applications are really useful to learn languages, and belong to my routine of studies, however, Readlang does not provide a good importation system. It does export the new words to a .txt file, but has many problems. 
   Through this integration I can easily and automatically create new anki flashcards while reading content in Readlang, a process that I used to do manually up to now
+  
+  
+### Folders:
+ - eliminate_repetitions: I downloaded the deck from frequency dictionary of german. but my german is already b2, therefore many word sare useless to me. so with this code I could delete the words that were into my other deck and merge the 2 without so much manual work.
+ - ocr: REadlang does not work on PDF's for now. I wanted to read the model tests from each language while saving the unknown words, So I am using OCR to extract the texts from those tests. This could become a Readlang for PDF one day.
+ - parsers_deutsch_nouns:
+ - readlang_intgration: This is a parser. It changes the formatting from readlang in order to make it a nicer view for ANKI and adds the translation from google translator automatically. Because the translation from google is a web request, It does take a long time to run this code. For 10 flashcards It might take 5 minutes. You can turn off the automatic translator if you need speed. I might turn this into an ANKI-addon on the future.
+  
  
 ### Implemented:
   - Merges repeted sentences
@@ -35,6 +43,4 @@ this script parses the files from [Readlang](https://readlang.com/) website in o
   - Add TTS with google API
   - getting highlighted words from images from website
 
-## Problems:
-  - Slow.
 
